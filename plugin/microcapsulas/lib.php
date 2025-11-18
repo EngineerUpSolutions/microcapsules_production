@@ -3,45 +3,32 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
 {
     global $PAGE, $USER;
 
-    /***********************************************************
-     * 1) SI ESTÁS DENTRO DE UN CURSO → NO AÑADIR NADA
-     ***********************************************************/
+    // 1) Si está dentro de un curso, no mostrar nada
     if (!empty($PAGE->course->id) && $PAGE->course->id != SITEID) {
         return;
     }
 
-    /***********************************************************
-     * 2) VERIFICAR CAPACIDAD
-     ***********************************************************/
+    // 2) Verificar permiso global
     $systemcontext = context_system::instance();
     if (!has_capability('local/microcapsulas:view', $systemcontext)) {
         return;
     }
 
-    /***********************************************************
-     * 3) DEBUG DE NODOS: MOSTRAR ESTRUCTURA REAL
-     ***********************************************************/
+    // 3) DEBUG: imprimir todos los nodos disponibles
     error_log("===== MICROCAPSULAS DEBUG START =====");
-    foreach ($root->children as $key => $node) {
-        $text = is_string($node->text) ? $node->text : $node->text->out();
-        error_log("NODE KEY: $key | TEXT: " . $text . " | TYPE: " . $node->type);
+    foreach ($root->children as $key => $child) {
+        $text = is_string($child->text) ? $child->text : $child->text->out();
+        error_log("KEY: $key | TEXT: $text | TYPE: {$child->type}");
     }
     error_log("===== MICROCAPSULAS DEBUG END =====");
 
-    /***********************************************************
-     * 4) CREAR URL
-     ***********************************************************/
+    // 4) Crear URL
     $main_url = new moodle_url(
         '/../lmsActividades/config/login_config.php',
-        [
-            'user' => $USER->id,
-            'sesskey' => sesskey()
-        ]
+        ['user' => $USER->id, 'sesskey' => sesskey()]
     );
 
-    /***********************************************************
-     * 5) CREAR NODO
-     ***********************************************************/
+    // 5) Crear nodo de Microcapsulas
     $mynode = navigation_node::create(
         get_string('pluginname', 'local_microcapsulas'),
         $main_url,
@@ -50,42 +37,29 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
         'local_microcapsulas_global',
         new pix_icon('i/grades', '')
     );
+
     $mynode->showinflatnavigation = true;
 
-    /***********************************************************
-     * 6) INTENTAR UBICAR EL NODO "MIS CURSOS"
-     ***********************************************************/
-    $target = null;
+    // 6) Buscar el nodo "mycourses" MANUALMENTE (sin find)
+    $mycoursesnode = null;
 
-    // Intento 1: nodo clásico
-    $target = $root->find('mycourses', navigation_node::TYPE_CATEGORY);
-
-    // Intento 2: nodo sin tipo
-    if (!$target) {
-        $target = $root->find('mycourses');
+    foreach ($root->children as $key => $child) {
+        $text = is_string($child->text) ? $child->text : $child->text->out();
+        if (trim($text) === "Mis cursos") {  // EXACTAMENTE igual a lo que se ve en pantalla
+            $mycoursesnode = $child;
+            break;
+        }
     }
 
-    // Intento 3: en algunas versiones está como "courses"
-    if (!$target) {
-        $target = $root->find('courses', navigation_node::TYPE_CATEGORY);
-    }
+    // 7) Insertar Microcapsulas justo debajo de Mis cursos
+    if ($mycoursesnode) {
+        $parent = $mycoursesnode->parent ?: $root;
+        $parent->add_node($mynode, $mycoursesnode->key + 1);
 
-    // Intento 4: tema Boost 4.x
-    if (!$target) {
-        $target = $root->find('courseindex');
-    }
-
-    /***********************************************************
-     * 7) INSERTAR MICROCAPSULAS (DEPENDIENDO DEL TARGET)
-     ***********************************************************/
-    if ($target) {
-        // Insertar justo DESPUÉS de “Mis cursos”
-        $parent = $target->parent ?: $root;
-        $parent->add_node($mynode, $target->key + 1);
-        error_log("[MICROCAPSULAS] Insertado después de 'Mis cursos'.");
+        error_log("[MICROCAPSULAS] Insertado debajo de 'Mis cursos'");
     } else {
-        // ÚLTIMO fallback: agregar al final del root
+        // Fallback: lo pone al final del root
         $root->add_node($mynode);
-        error_log("[MICROCAPSULAS] Insertado en root (fallback).");
+        error_log("[MICROCAPSULAS] Insertado en root (fallback)");
     }
 }
