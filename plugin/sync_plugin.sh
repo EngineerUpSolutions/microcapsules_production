@@ -1,5 +1,8 @@
 #!/bin/bash
 
-echo "🔁 Syncing Moodle plugin code into Antiplagio repository..."
-rsync -av --delete /var/www/html/zajuna/local/antiplagiarsena/ plugin/antiplagiarsena/
+SRC="/var/www/html/zajuna/local/microcapsulas/"
+DEST="/home/sena/Documents/microcapsules/plugin/microcapsulas/"
+
+echo "🔁 Syncing Moodle plugin code..."
+rsync -av --delete "$SRC" "$DEST"
 echo "✅ Sync complete!"

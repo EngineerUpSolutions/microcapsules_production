@@ -61,7 +61,7 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
         }
         // Construir la URL consolidada
         if ($coursenode = $root->find($course->id, navigation_node::TYPE_COURSE)) {
-            $main_url = new moodle_url('/../lmsActividades/config/login_config.php', $main_url_params);  #script new to be autheticated!!!
+            $main_url = new moodle_url('/../lmsActividades/config/login_config.php', $main_url_params);
             // $url = new moodle_url('/local/microcapsulas/index.php', $params);
 
             $mynode = navigation_node::create(
