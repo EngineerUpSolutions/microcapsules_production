@@ -1,52 +1,64 @@
 <?php
 function local_microcapsulas_extend_navigation(global_navigation $root)
 {
-    global $PAGE, $USER, $CFG;
+    global $PAGE, $USER, $CFG, $DB;
 
-    // 1) Si está dentro de un curso → no mostrar
+    // ---------------------------------------------------------
+    // 1) Do NOT show the button inside any course
+    // ---------------------------------------------------------
     if (!empty($PAGE->course->id) && $PAGE->course->id != SITEID) {
         return;
     }
 
-    // 2) Verificar si el usuario es estudiante (roleid = 5)
-    $roles = get_user_roles(context_system::instance(), $USER->id);
-    $isstudent = false;
-
-    foreach ($roles as $r) {
-        if ($r->roleid == 5) { // Estudiante
-            $isstudent = true;
-            break;
-        }
-    }
+    // ---------------------------------------------------------
+    // 2) Detect if user is a REAL student (roleid = 5)
+    //    Students DO NOT have system-level roles.
+    //    So we detect roleid=5 in course or category contexts.
+    // ---------------------------------------------------------
+    $isstudent = $DB->record_exists_sql("
+        SELECT 1
+          FROM {role_assignments} ra
+          JOIN {context} ctx ON ctx.id = ra.contextid
+         WHERE ra.userid = ?
+           AND ra.roleid = 5
+           AND ctx.contextlevel IN (".CONTEXT_COURSE.", ".CONTEXT_COURSECAT.")
+         LIMIT 1
+    ", [$USER->id]);
 
     if (!$isstudent) {
         return;
     }
 
-    // 3) Verificar si el estudiante tiene cursos visibles en categoría 4
+    // ---------------------------------------------------------
+    // 3) Student must have at least ONE visible course in category 4
+    // ---------------------------------------------------------
     require_once($CFG->dirroot . '/course/lib.php');
+    $courses = enrol_get_users_courses($USER->id, true); // true = only visible
 
-    $courses = enrol_get_users_courses($USER->id, true); // solo cursos visibles
-
-    $hasvisiblecategory4 = false;
-
+    $has_cat4_visible_course = false;
     foreach ($courses as $c) {
         if ($c->category == 4 && $c->visible == 1) {
-            $hasvisiblecategory4 = true;
+            $has_cat4_visible_course = true;
             break;
         }
     }
 
-    if (!$hasvisiblecategory4) {
+    if (!$has_cat4_visible_course) {
         return;
     }
 
-    // 4) Construir la URL del módulo
+    // ---------------------------------------------------------
+    // 4) Build Microcapsulas URL
+    // ---------------------------------------------------------
     $main_url = new moodle_url(
         '/../lmsActividades/config/login_config.php',
-        ['user' => $USER->id, 'sesskey' => sesskey()]
+        [
+            'user'    => $USER->id,
+            'sesskey' => sesskey()
+        ]
     );
 
+    // Create navigation node
     $mynode = navigation_node::create(
         get_string('pluginname', 'local_microcapsulas'),
         $main_url,
@@ -57,22 +69,26 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
     );
     $mynode->showinflatnavigation = true;
 
-    // 5) Colocar el nodo debajo de “Mis cursos”
+    // ---------------------------------------------------------
+    // 5) Insert node BELOW “Mis cursos”
+    //    Moodle internal key for My Courses is: "mycourses"
+    // ---------------------------------------------------------
     $mycoursesnode = null;
 
-    foreach ($root->children as $key => $child) {
-        $text = is_string($child->text) ? $child->text : $child->text->out();
-        if (trim($text) === "Mis cursos") {
+    foreach ($root->children as $child) {
+        if ($child->key === 'mycourses') {
             $mycoursesnode = $child;
             break;
         }
     }
 
     if ($mycoursesnode) {
+        // Insert right after "Mis cursos"
         $parent = $mycoursesnode->parent ?: $root;
         $parent->add_node($mynode, $mycoursesnode->key + 1);
+
     } else {
-        // fallback
+        // Fallback: add at root but still visible
         $root->add_node($mynode);
     }
 }
