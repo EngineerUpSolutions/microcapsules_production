@@ -22,8 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Centro de Microcapsulas';
-$string['microcapsulas'] = 'Centro de Microcapsulas';
+$string['pluginname'] = 'microcapsulas';
+$string['microcapsulas'] = 'microcapsulas';
 $string['microcapsulas:manage'] = 'Gestionar Microcapsulas local';
 $string['microcapsulas:view'] = 'Ver Microcapsulas local';
 $string['error'] = 'El código de centro de formación es requerido.';
