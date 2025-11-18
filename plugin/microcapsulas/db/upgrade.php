@@ -27,63 +27,69 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Upgrade hook for local_microcapsulas.
  */
-function xmldb_local_microcapsulas_upgrade($oldversion)
-{
+function xmldb_local_microcapsulas_upgrade($oldversion) {
     global $DB, $CFG;
     require_once($CFG->libdir . '/accesslib.php');
 
-    $targetversion = 2025090101;
+    // Usa un número de versión mayor al actual del plugin.
+    $targetversion = 2025090100;
+
     if ($oldversion < $targetversion) {
+        // Roles con permiso SOLO de visualizar.
+        $roles_view_only = [
+            'academiccoordinator',
+            'acompanamientofacilitador',
+            'training',
+            'student',
+        ];
+
+        // Roles con permiso de editar (implica ver).
+        $roles_edit = [
+            'repository',
+            'support',
+            'teacher',
+            'editingteacher',
+        ];
+
+        // Manager: todo.
+        $roles_manager_all = ['manager'];
+
+        // Contexto base (hereda a inferiores).
         $sysctx = \context_system::instance();
 
-        // Helper: obtener o crear rol por shortname.
-        $ensure_role = function (string $shortname, string $name, string $description = '') use ($DB) {
-            if ($role = $DB->get_record('role', ['shortname' => $shortname])) {
-                return (int) $role->id;
+        // Helper para asignar capacidad a un rol por shortname si existe.
+        $assign = function(string $shortname, string $cap, int $perm) use ($DB, $sysctx) {
+            if ($role = $DB->get_record('role', ['shortname' => $shortname], 'id,shortname')) {
+                assign_capability($cap, $perm, $role->id, $sysctx, true);
             }
-            // Crea el rol con archetype vacío para no heredar nada accidentalmente.
-            return create_role($name, $shortname, $description);
         };
 
-        // 1) Asegura existencia de los roles personalizados:
-        $r_acad = $ensure_role('academiccoordinator', 'Academic Coordinator');
-        $r_acomp = $ensure_role('acompanamientofacilitador', 'Acompañamiento Facilitador');
-        $r_train = $ensure_role('training', 'Training');
-        $r_repo = $ensure_role('repository', 'Repository');
-        $r_sup = $ensure_role('support', 'Support');
-
-        // 2) Roles nativos (siempre existen):
-        $rid_student = $DB->get_field('role', 'id', ['shortname' => 'student']);
-        $rid_teacher = $DB->get_field('role', 'id', ['shortname' => 'teacher']);
-        $rid_editingteacher = $DB->get_field('role', 'id', ['shortname' => 'editingteacher']);
-        $rid_manager = $DB->get_field('role', 'id', ['shortname' => 'manager']);
-
-        // 3) Asignaciones:
-        $viewcap = 'local/microcapsulas:view';
-        $editcap = 'local/microcapsulas:edit';
-
-        // View-only: academiccoordinator, acompanamientofacilitador, training, student
-        foreach ([$r_acad, $r_acomp, $r_train, $rid_student] as $rid) {
-            if ($rid) {
-                assign_capability($viewcap, CAP_ALLOW, $rid, $sysctx, /*overwrite*/ true);
-                assign_capability($editcap, CAP_PREVENT, $rid, $sysctx, /*overwrite*/ true);
-            }
+        // 1) View-only.
+        foreach ($roles_view_only as $shortname) {
+            $assign($shortname, 'local/microcapsulas:view', CAP_ALLOW);
+            // Asegura que no tengan edit (por si lo traían de antes).
+            $assign($shortname, 'local/microcapsulas:edit', CAP_PREVENT);
         }
 
-        // Edit: repository, support, teacher, editingteacher
-        foreach ([$r_repo, $r_sup, $rid_teacher, $rid_editingteacher] as $rid) {
-            if ($rid) {
-                assign_capability($viewcap, CAP_ALLOW, $rid, $sysctx, true);
-                assign_capability($editcap, CAP_ALLOW, $rid, $sysctx, true);
-            }
+        // 2) Edit roles (edit + view).
+        foreach ($roles_edit as $shortname) {
+            $assign($shortname, 'local/microcapsulas:view', CAP_ALLOW);
+            $assign($shortname, 'local/microcapsulas:edit', CAP_ALLOW);
         }
-        // Manager: todo
-        if ($rid_manager) {
-            assign_capability($viewcap, CAP_ALLOW, $rid_manager, $sysctx, true);
-            assign_capability($editcap, CAP_ALLOW, $rid_manager, $sysctx, true);
+
+        // 3) Manager: todo.
+        foreach ($roles_manager_all as $shortname) {
+            $assign($shortname, 'local/microcapsulas:view', CAP_ALLOW);
+            $assign($shortname, 'local/microcapsulas:edit', CAP_ALLOW);
         }
+
+        // Recomienda limpiar cachés de permisos/contextos.
+        // No es estrictamente necesario llamar a rebuild_contexts aquí,
+        // Moodle invalida cachés; pero si quieres forzar:
+        // rebuild_contexts(\context_system::instance()->id);
 
         upgrade_plugin_savepoint(true, $targetversion, 'local', 'microcapsulas');
     }
+
     return true;
 }

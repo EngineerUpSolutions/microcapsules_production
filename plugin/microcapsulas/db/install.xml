@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/microcapsulas/db" VERSION="20200213" COMMENT="XMLDB file for local microcapsulas plugin"
+<XMLDB PATH="local/calificaciones/db" VERSION="20200213" COMMENT="XMLDB file for local calificaciones plugin"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="local_microcapsulas_logs" COMMENT="each record is a log">
+    <TABLE NAME="local_califica_logs" COMMENT="each record is a log">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="code" TYPE="text" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>

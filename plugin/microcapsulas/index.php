@@ -48,10 +48,11 @@ $dircomplement = explode("/", $currenturl->get_path());
 $PAGE->set_url($currenturl);
 $PAGE->set_context($context);
 $PAGE->set_course(get_course($courseid));
-$PAGE->set_title('Lista Microcapsulas');
+$PAGE->set_title('Lista microcapsulas');
 
 // Cargar los archivos CSS y JS
 $PAGE->requires->css(new moodle_url('/local/microcapsulas/styles/styles.css', ['v' => time()]));
+
 
 // Contexto para Mustache
 $templatecontext = (object) [

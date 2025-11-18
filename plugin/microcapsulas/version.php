@@ -1,5 +1,4 @@
 <?php
-//version1
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,7 +17,7 @@
 /**
  * Boost.
  *
- * @package    local_microcapsulas
+ * @package    local_calificaciones
  * @author     Zajuna team 
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @var stdClass $plugin
@@ -26,6 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2025101000;                // Current version
-$plugin->requires = 2023100400;                // Requires this Moodle version
-$plugin->component = 'local_microcapsulas';  // Full name of plugin
+$plugin->version   = 2025111800;     // Nueva versión, mayor a 2025101000
+$plugin->requires  = 2023100400;
+$plugin->component = 'local_microcapsulas';

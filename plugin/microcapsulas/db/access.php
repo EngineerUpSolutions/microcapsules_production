@@ -15,43 +15,27 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin capabilities for the local_microcapsulas plugin.
+ * Plugin capabilities for the local_calificaciones plugin.
  *
- * @package   local_microcapsulas
+ * @package   local_calificaciones
  * @copyright Equipo zajuna
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 // Definir las capacidades del plugin
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
-    // Ver microcapsulas (solo lectura).
-    'local/microcapsulas:view' => [
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => [
-            // Manager: todo permitido
-            'manager' => CAP_ALLOW,
-            // Docentes nativos: pueden ver (además de editar más abajo).
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            // Estudiante: solo ver
-            'student' => CAP_ALLOW,
-        ],
-    ],
 
-    // Editar microcapsulas (escritura).
-    'local/microcapsulas:edit' => [
-        'riskbitmask' => RISK_PERSONAL | RISK_DATALOSS,
-        'captype' => 'write',
+    // Ver calificaciones (solo lectura).
+    'local/microcapsulas:view' => [
+        'captype'      => 'read',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => [
-            // Manager: todo permitido
-            'manager' => CAP_ALLOW,
-            // Docentes nativos con edición
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
+        'archetypes'   => [
+            // 'manager'        => CAP_ALLOW,
+            // 'teacher'        => CAP_ALLOW,
+            // 'editingteacher' => CAP_ALLOW,
+            'student'        => CAP_ALLOW
         ],
-    ],
+    ]
+
 ];
