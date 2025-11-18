@@ -60,9 +60,10 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
             $main_url_params['rol_temp'] = $temporal_roleid;
         }
         // Construir la URL consolidada
-        if ($coursenode = $root->find($course->id, navigation_node::TYPE_COURSE)) {
+        // ➤ Add Microcapsulas in "Mis cursos" (global)
+        if ($mycourses = $root->find('mycourses', navigation_node::TYPE_MY)) {
+
             $main_url = new moodle_url('/../lmsActividades/config/login_config.php', $main_url_params);
-            // $url = new moodle_url('/local/microcapsulas/index.php', $params);
 
             $mynode = navigation_node::create(
                 get_string('pluginname', 'local_microcapsulas'),
@@ -72,36 +73,12 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
                 'local_microcapsulas_global',
                 new pix_icon('i/grades', '')
             );
+
             $mynode->showinflatnavigation = true;
 
-            // --- Agrega JUSTO DESPUÉS de "grades" usando $beforekey ---
-            $keys = $coursenode->get_children_key_list(); // orden real de hijos
-            $beforekey = null;
-
-            $pos = array_search('grades', $keys, true);
-            if ($pos !== false) {
-                // clave del nodo que viene después de "grades"
-                $beforekey = $keys[$pos + 1] ?? null;
-            }
-
-            if ($beforekey) {
-                $coursenode->add_node($mynode, $beforekey); // queda después de grades
-            } else {
-                // si no existe, lo agrega al final.
-                $candidatos = ['participants', 'reports', 'competencies', 'badges', 'moremenu'];
-                $placed = false;
-                foreach ($candidatos as $cand) {
-                    if (in_array($cand, $keys, true)) {
-                        $coursenode->add_node($mynode, $cand);
-                        $placed = true;
-                        break;
-                    }
-                }
-                if (!$placed) {
-                    $coursenode->add_node($mynode); 
-                }
-            }
-        }
+            // ✔ Add Microcapsulas at the end
+            $mycourses->add_node($mynode);
+        }        
         return;
     }
 }
