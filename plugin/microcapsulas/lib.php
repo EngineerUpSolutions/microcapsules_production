@@ -4,6 +4,23 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
     global $PAGE, $USER, $CFG, $DB;
 
     // ---------------------------------------------------------
+    // 0) Skip during install/upgrade to avoid DB errors
+    // ---------------------------------------------------------
+    if (function_exists('during_initial_install') && during_initial_install()) {
+        return;
+    }
+
+    if ($PAGE->pagetype === 'admin-index') {
+        return;
+    }
+
+    // Ensure DB and context constants are loaded
+    if (!isset($DB)) {
+        return;
+    }
+    require_once($CFG->dirroot . '/lib/accesslib.php');
+
+    // ---------------------------------------------------------
     // 1) Do NOT show the button inside any course
     // ---------------------------------------------------------
     if (!empty($PAGE->course->id) && $PAGE->course->id != SITEID) {
@@ -12,8 +29,6 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
 
     // ---------------------------------------------------------
     // 2) Detect if user is a REAL student (roleid = 5)
-    //    Students DO NOT have system-level roles.
-    //    So we detect roleid=5 in course or category contexts.
     // ---------------------------------------------------------
     $isstudent = $DB->record_exists_sql("
         SELECT 1
@@ -30,10 +45,10 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
     }
 
     // ---------------------------------------------------------
-    // 3) Student must have at least ONE visible course in category 4
+    // 3) Check if student has at least one visible course in category 4
     // ---------------------------------------------------------
     require_once($CFG->dirroot . '/course/lib.php');
-    $courses = enrol_get_users_courses($USER->id, true); // true = only visible
+    $courses = enrol_get_users_courses($USER->id, true);
 
     $has_cat4_visible_course = false;
     foreach ($courses as $c) {
@@ -58,7 +73,6 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
         ]
     );
 
-    // Create navigation node
     $mynode = navigation_node::create(
         get_string('pluginname', 'local_microcapsulas'),
         $main_url,
@@ -70,8 +84,7 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
     $mynode->showinflatnavigation = true;
 
     // ---------------------------------------------------------
-    // 5) Insert node BELOW “Mis cursos”
-    //    Moodle internal key for My Courses is: "mycourses"
+    // 5) Insert node after "My courses"
     // ---------------------------------------------------------
     $mycoursesnode = null;
 
@@ -83,12 +96,9 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
     }
 
     if ($mycoursesnode) {
-        // Insert right after "Mis cursos"
         $parent = $mycoursesnode->parent ?: $root;
         $parent->add_node($mynode, $mycoursesnode->key + 1);
-
     } else {
-        // Fallback: add at root but still visible
         $root->add_node($mynode);
     }
 }
