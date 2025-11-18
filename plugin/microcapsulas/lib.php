@@ -98,26 +98,10 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
                     }
                 }
                 if (!$placed) {
-                    $coursenode->add_node($mynode); // al final
+                    $coursenode->add_node($mynode); 
                 }
             }
         }
         return;
     }
-
-    // // Portada: acceso general (opcional).
-    // if ($PAGE->pagelayout === 'frontpage') {
-    //     $sitecontext = context_course::instance(SITEID);
-    //     if (!has_capability('local/microcapsulas:view', $sitecontext)) {
-    //         return;
-    //     }
-    //     $root->add(
-    //         get_string('pluginname', 'local_microcapsulas'),
-    //         new moodle_url('/local/microcapsulas/index.php'),
-    //         navigation_node::TYPE_CUSTOM,
-    //         null,
-    //         'local_microcapsulas_global_front',
-    //         new pix_icon('i/grades', '')
-    //     )->showinflatnavigation = true;
-    // }
 }
