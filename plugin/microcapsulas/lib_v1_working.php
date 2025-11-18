@@ -1,52 +1,34 @@
 <?php
 function local_microcapsulas_extend_navigation(global_navigation $root)
 {
-    global $PAGE, $USER, $CFG;
+    global $PAGE, $USER;
 
-    // 1) Si está dentro de un curso → no mostrar
+    // 1) Si está dentro de un curso, no mostrar nada
     if (!empty($PAGE->course->id) && $PAGE->course->id != SITEID) {
         return;
     }
 
-    // 2) Verificar si el usuario es estudiante (roleid = 5)
-    $roles = get_user_roles(context_system::instance(), $USER->id);
-    $isstudent = false;
-
-    foreach ($roles as $r) {
-        if ($r->roleid == 5) { // Estudiante
-            $isstudent = true;
-            break;
-        }
-    }
-
-    if (!$isstudent) {
+    // 2) Verificar permiso global
+    $systemcontext = context_system::instance();
+    if (!has_capability('local/microcapsulas:view', $systemcontext)) {
         return;
     }
 
-    // 3) Verificar si el estudiante tiene cursos visibles en categoría 4
-    require_once($CFG->dirroot . '/course/lib.php');
-
-    $courses = enrol_get_users_courses($USER->id, true); // solo cursos visibles
-
-    $hasvisiblecategory4 = false;
-
-    foreach ($courses as $c) {
-        if ($c->category == 4 && $c->visible == 1) {
-            $hasvisiblecategory4 = true;
-            break;
-        }
+    // 3) DEBUG: imprimir todos los nodos disponibles
+    error_log("===== MICROCAPSULAS DEBUG START =====");
+    foreach ($root->children as $key => $child) {
+        $text = is_string($child->text) ? $child->text : $child->text->out();
+        error_log("KEY: $key | TEXT: $text | TYPE: {$child->type}");
     }
+    error_log("===== MICROCAPSULAS DEBUG END =====");
 
-    if (!$hasvisiblecategory4) {
-        return;
-    }
-
-    // 4) Construir la URL del módulo
+    // 4) Crear URL
     $main_url = new moodle_url(
         '/../lmsActividades/config/login_config.php',
         ['user' => $USER->id, 'sesskey' => sesskey()]
     );
 
+    // 5) Crear nodo de Microcapsulas
     $mynode = navigation_node::create(
         get_string('pluginname', 'local_microcapsulas'),
         $main_url,
@@ -55,24 +37,29 @@ function local_microcapsulas_extend_navigation(global_navigation $root)
         'local_microcapsulas_global',
         new pix_icon('i/grades', '')
     );
+
     $mynode->showinflatnavigation = true;
 
-    // 5) Colocar el nodo debajo de “Mis cursos”
+    // 6) Buscar el nodo "mycourses" MANUALMENTE (sin find)
     $mycoursesnode = null;
 
     foreach ($root->children as $key => $child) {
         $text = is_string($child->text) ? $child->text : $child->text->out();
-        if (trim($text) === "Mis cursos") {
+        if (trim($text) === "Mis cursos") {  // EXACTAMENTE igual a lo que se ve en pantalla
             $mycoursesnode = $child;
             break;
         }
     }
 
+    // 7) Insertar Microcapsulas justo debajo de Mis cursos
     if ($mycoursesnode) {
         $parent = $mycoursesnode->parent ?: $root;
         $parent->add_node($mynode, $mycoursesnode->key + 1);
+
+        error_log("[MICROCAPSULAS] Insertado debajo de 'Mis cursos'");
     } else {
-        // fallback
+        // Fallback: lo pone al final del root
         $root->add_node($mynode);
+        error_log("[MICROCAPSULAS] Insertado en root (fallback)");
     }
 }
