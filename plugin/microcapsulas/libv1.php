@@ -13,66 +13,38 @@ function local_microcapsulas_extend_navigation(global_navigation $root) {
     // 1️⃣ Verificar si el usuario es ESTUDIANTE (roleid = 5)
     // SIN LIMIT 1 → Moodle ya lo añade internamente
     // ----------------------------------------
-    // $sqlstudent = "
-    //     SELECT 1
-    //     FROM {role_assignments} ra
-    //     JOIN {context} ctx ON ctx.id = ra.contextid
-    //     WHERE ra.userid = :userid
-    //       AND ra.roleid = 5
-    // ";
+    $sqlstudent = "
+        SELECT 1
+        FROM {role_assignments} ra
+        JOIN {context} ctx ON ctx.id = ra.contextid
+        WHERE ra.userid = :userid
+          AND ra.roleid = 5
+    ";
 
-    // $isstudent = $DB->record_exists_sql($sqlstudent, ['userid' => $USER->id]);
+    $isstudent = $DB->record_exists_sql($sqlstudent, ['userid' => $USER->id]);
 
-    // if (!$isstudent) {
-    //     return;
-    // }
+    if (!$isstudent) {
+        return;
+    }
 
     // ----------------------------------------
     // 2️⃣ & 3️⃣ Verificar cursos matriculados categoría 4 y visibles
     // USAR API OFICIAL DE MOODLE para evitar errores de navegación
     // ----------------------------------------
-    // $courses = enrol_get_users_courses($USER->id, true, ['id', 'category', 'visible']);
-
-    // $eligible = false;
-
-    // foreach ($courses as $course) {
-    //     if ((int)$course->category === 4 && (int)$course->visible === 1) {
-    //         $eligible = true;
-    //         break;
-    //     }
-    // }
-
-    // if (!$eligible) {
-    //     return;
-    // }
     $courses = enrol_get_users_courses($USER->id, true, ['id', 'category', 'visible']);
 
     $eligible = false;
 
     foreach ($courses as $course) {
-
-        // First filter: category 4 + visible
-        if ((int)$course->category !== 4 || (int)$course->visible !== 1) {
-            continue;
-        }
-
-        // Get user roles inside THIS course
-        $context = context_course::instance($course->id);
-        $roles = get_user_roles($context, $USER->id);
-
-        // Check if user has roleid 1, 2 or 5 in this course
-        foreach ($roles as $r) {
-            if (in_array((int)$r->roleid, [1, 2, 5], true)) {
-                $eligible = true;
-                break 2; // leave BOTH loops (course + roles)
-            }
+        if ((int)$course->category === 4 && (int)$course->visible === 1) {
+            $eligible = true;
+            break;
         }
     }
 
     if (!$eligible) {
-        return; // don't show the button
+        return;
     }
-
 
     // ----------------------------------------
     // 4️⃣ Todas las condiciones cumplen → mostrar botón
