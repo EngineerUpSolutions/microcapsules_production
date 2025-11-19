@@ -59,18 +59,31 @@ function local_microcapsulas_extend_navigation(global_navigation $root) {
     // $root->add_node($node);
 
     //version2 stable working on the same tab
-    $externalurl = new moodle_url('http://localhost:3000');
+    // $externalurl = new moodle_url('http://localhost:3000');
 
-    $node = $root->add(
+    // $node = $root->add(
+    //     get_string('pluginname', 'local_microcapsulas'),
+    //     $externalurl,
+    //     navigation_node::TYPE_CUSTOM,
+    //     null,
+    //     'local_microcapsulas'
+    // );
+
+    // // This is the correct way in Moodle 4.x
+    // $node->openinnewwindow = true;
+
+    //version3
+    $url = new moodle_url('/local/microcapsulas/index.php');
+    $node = navigation_node::create(
         get_string('pluginname', 'local_microcapsulas'),
-        $externalurl,
+        $url,
         navigation_node::TYPE_CUSTOM,
         null,
         'local_microcapsulas'
     );
+    $root->add_node($node);
 
-    // This is the correct way in Moodle 4.x
-    $node->openinnewwindow = true;
+
 
 
 
