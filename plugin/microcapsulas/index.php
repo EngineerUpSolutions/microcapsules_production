@@ -1,67 +1,23 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * Página principal del menú de microcapsulas.
- *
- * @package    local_microcapsulas
- * @author     Equipo zajuna
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 o posterior
- */
-
 require_once(__DIR__ . '/../../config.php');
-
-require_once($CFG->dirroot . '/local/microcapsulas/lib.php');
-
 require_login();
 
-global $USER, $PAGE;
+// URL of your Next.js Microcapsulas frontend
+// LOCAL (development)
+$externalurl = "http://localhost:3000";
 
-// Parámetros seguros
-$courseid = required_param('courseid', PARAM_INT);
-$context = context_course::instance($courseid);
+// In PRODUCTION, change this to:
+// $externalurl = "https://frontend-domain-or-subdomain/microcapsulas";
 
-// Verificación de capacidades
-require_capability('local/microcapsulas:view', $context); // acceso general al plugin
-
-
-// Preparar URL y configuración de página
-$params = ['courseid' => $courseid];
-$currenturl = new moodle_url('/local/microcapsulas/index.php', $params);
-
-$dircomplement = explode("/", $currenturl->get_path());
-
-// Configurar la página
-$PAGE->set_url($currenturl);
-$PAGE->set_context($context);
-$PAGE->set_course(get_course($courseid));
-$PAGE->set_title('Lista microcapsulas');
-
-// Cargar los archivos CSS y JS
-$PAGE->requires->css(new moodle_url('/local/microcapsulas/styles/styles.css', ['v' => time()]));
-
-
-// Contexto para Mustache
-$templatecontext = (object) [
-    'courseid' => $courseid,
-    'teacherid' => $USER->id,
-    'dirroot' => $dircomplement[1],
-];
-
-// Renderizar la página
+// Moodle standard header
 echo $OUTPUT->header();
 
+// Open frontend in a new tab and redirect Moodle tab back
+echo "
+<script>
+    window.open('$externalurl', '_blank');
+</script>
+";
+
+// Standard footer
 echo $OUTPUT->footer();
