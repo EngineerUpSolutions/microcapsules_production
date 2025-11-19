@@ -2,9 +2,7 @@
 require_once(__DIR__ . '/../../config.php');
 require_login();
 
-// $externalurl = "http://localhost:3000";
-$externalurl = "http://127.0.0.1/microcapsulas";
-
+$externalurl = "http://localhost:3000";
 
 echo $OUTPUT->header();
 
