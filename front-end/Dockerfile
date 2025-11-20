@@ -1,15 +1,15 @@
 # ---- Build Stage ----
-FROM node:22.20-alpine3.21 AS builder
+FROM node:20 AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+RUN npm install --force
 
 COPY . .
 RUN npm run build
 
 # ---- Production Stage ----
-FROM node:22.20-alpine3.21 AS runner
+FROM node:20 AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
