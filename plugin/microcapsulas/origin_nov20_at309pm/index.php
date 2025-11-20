@@ -1,11 +1,33 @@
 <?php
+// require_once(__DIR__ . '/../../config.php');
+// require_login();
+
+// // $externalurl = "http://localhost:3000";
+// $externalurl = "http://127.0.0.1/microcapsulas";
+
+
+// echo $OUTPUT->header();
+
+// echo "
+// <script>
+//     window.open('$externalurl', '_blank');
+//     window.location.href = '$CFG->wwwroot';
+// </script>
+// ";
+
+// echo $OUTPUT->footer();
 require_once(__DIR__ . '/../../config.php');
 require_login();
 
+// ---------------------------
+// 1. Collect user information
+// ---------------------------
 $userid = $USER->id;
-$fullname = fullname($USER);
+$fullname = urlencode(fullname($USER));
 
-// Collect courses exactly as before:
+// ---------------------------------------
+// 2. Collect filtered courses (same rules)
+// ---------------------------------------
 $courses = enrol_get_users_courses(
     $USER->id,
     true,
@@ -15,6 +37,7 @@ $courses = enrol_get_users_courses(
 $filteredcourses = [];
 
 foreach ($courses as $c) {
+
     if ((int)$c->category !== 4 || (int)$c->visible !== 1) {
         continue;
     }
@@ -24,35 +47,39 @@ foreach ($courses as $c) {
 
     foreach ($roles as $r) {
         if (in_array((int)$r->roleid, [1, 2, 5], true)) {
+
             $filteredcourses[] = [
                 'id' => $c->id,
                 'fullname' => $c->fullname
             ];
+
             break;
         }
     }
 }
 
-// Create raw string
-$raw = $userid . '|' . $fullname . '|' . json_encode($filteredcourses);
-
-// SIGNATURE
-$secret = 'CHANGE_THIS_SECRET_32_CHARACTERS';
-$sig = hash_hmac('sha256', $raw, $secret);
-
+// Encode the course list
 $encodedcourses = urlencode(json_encode($filteredcourses));
 
+// --------------------------------------------------------
+// 3. Build target URL with all data included (Option A)
+// --------------------------------------------------------
 $externalurl = "http://127.0.0.1/microcapsulas"
     . "?uid={$userid}"
-    . "&name=" . urlencode($fullname)
-    . "&courses={$encodedcourses}"
-    . "&sig={$sig}";
+    . "&name={$fullname}"
+    . "&courses={$encodedcourses}";
 
+// --------------------------
+// 4. Render & redirect
+// --------------------------
 echo $OUTPUT->header();
+
 echo "
 <script>
     window.open('$externalurl', '_blank');
     window.location.href = '$CFG->wwwroot';
 </script>
 ";
+
 echo $OUTPUT->footer();
+
