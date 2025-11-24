@@ -17,4 +17,10 @@ curl -X POST http://localhost:8080/proxy/microcapsules \
          }'
 
 
+2
+
+curl -X POST http://localhost:8080/proxy/topics \
+     -H "Content-Type: application/json" \
+     -d '{"curso": "GUIANZA TURISTICA", "numero_temas": 5}'
+
 
