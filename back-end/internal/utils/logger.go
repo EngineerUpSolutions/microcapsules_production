@@ -34,12 +34,13 @@ func InitLogger() error {
 	// 	rotatelogs.WithRotationCount(7),           // Keep last 7 logs
 	// )
 
-	// this is for testing rotation files
+
 	writer, err := rotatelogs.New(
-		"/app/logs/app-log-%Y-%m-%d-%H-%M.log",         // Includes hour and minute
-		rotatelogs.WithRotationTime(5*time.Minute),     // Rotate every 5 minutes
-		rotatelogs.WithRotationCount(2),                // Keep last 2 log files
+		"/app/logs/app-log-%Y-%m-%d-%H-%M.log",  // include minutes
+		rotatelogs.WithRotationTime(5 * time.Minute), // rotate every 5 min
+		rotatelogs.WithRotationCount(2),              // keep last 2 files
 	)
+
 
 
 

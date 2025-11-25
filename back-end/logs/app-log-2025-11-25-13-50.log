@@ -1,0 +1,3 @@
+2025/11/25 13:50:00 ERROR: Topics API returned status 400 - Response: {"error":{"code":"INVALID_REQUEST","message":"Curso es requerido","details":"El campo 'curso' no puede estar vacio"}}
+2025/11/25 13:50:01 ERROR: Topics API returned status 400 - Response: {"error":{"code":"INVALID_REQUEST","message":"Curso es requerido","details":"El campo 'curso' no puede estar vacio"}}
+2025/11/25 13:50:03 ERROR: Topics API returned status 400 - Response: {"error":{"code":"INVALID_REQUEST","message":"Curso es requerido","details":"El campo 'curso' no puede estar vacio"}}
