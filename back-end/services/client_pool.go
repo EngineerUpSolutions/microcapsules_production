@@ -20,5 +20,5 @@ var (
 		},
 	}
 
-	Semaphore = make(chan struct{}, 100) 
+	Semaphore = make(chan struct{}, 20) 
 )
