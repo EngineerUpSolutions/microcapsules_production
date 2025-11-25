@@ -1,5 +1,4 @@
 package utils
-
 import (
 	"log"
 	"os"
@@ -7,9 +6,7 @@ import (
 	"github.com/lestrrat-go/file-rotatelogs"
 	"github.com/pkg/errors"
 )
-
 var Logger *log.Logger
-
 func InitLogger() error {
 	// Set timezone to Bogotá
 	loc, err := time.LoadLocation("America/Bogota")
@@ -17,28 +14,20 @@ func InitLogger() error {
 		return errors.Wrap(err, "failed to load Bogotá timezone")
 	}
 	time.Local = loc
-
 	// Ensure log directory exists
 	if _, err := os.Stat("/app/logs"); os.IsNotExist(err) {
 		if err := os.MkdirAll("/app/logs", os.ModePerm); err != nil {
 			return errors.Wrap(err, "failed to create log directory")
 		}
 	}
-	// writer, err := rotatelogs.New(
-	// 	"/app/logs/app-log-%Y-%m-%d-%H-%M.log",  // include minutes
-	// 	rotatelogs.WithRotationTime(5 * time.Minute), // rotate every 5 min
-	// 	rotatelogs.WithRotationCount(2),              // keep last 2 files
-	// )
 	writer, err := rotatelogs.New(
 		"/app/logs/app-log-%Y-%m-%d-%H.log",         // Rotate hourly
 		rotatelogs.WithRotationTime(time.Hour),      // New file every hour
 		rotatelogs.WithRotationCount(48),            // Keep last 48 files (~2 days of logs)
 	)
-
 	if err != nil {
 		return errors.Wrap(err, "failed to create log writer")
 	}
-
 	Logger = log.New(writer, "", log.LstdFlags)
 	return nil
 }
