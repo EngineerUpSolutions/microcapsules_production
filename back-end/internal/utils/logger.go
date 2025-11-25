@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 	"time"
-
 	"github.com/lestrrat-go/file-rotatelogs"
 	"github.com/pkg/errors"
 )
@@ -25,24 +24,16 @@ func InitLogger() error {
 			return errors.Wrap(err, "failed to create log directory")
 		}
 	}
-
-
-	// this one is for production
 	// writer, err := rotatelogs.New(
-	// 	"/app/logs/app-log-%Y-%m-%d.log",
-	// 	rotatelogs.WithRotationTime(24*time.Hour), // Rotate daily
-	// 	rotatelogs.WithRotationCount(7),           // Keep last 7 logs
+	// 	"/app/logs/app-log-%Y-%m-%d-%H-%M.log",  // include minutes
+	// 	rotatelogs.WithRotationTime(5 * time.Minute), // rotate every 5 min
+	// 	rotatelogs.WithRotationCount(2),              // keep last 2 files
 	// )
-
-
 	writer, err := rotatelogs.New(
-		"/app/logs/app-log-%Y-%m-%d-%H-%M.log",  // include minutes
-		rotatelogs.WithRotationTime(5 * time.Minute), // rotate every 5 min
-		rotatelogs.WithRotationCount(2),              // keep last 2 files
+		"/app/logs/app-log-%Y-%m-%d-%H.log",         // Rotate hourly
+		rotatelogs.WithRotationTime(time.Hour),      // New file every hour
+		rotatelogs.WithRotationCount(48),            // Keep last 48 files (~2 days of logs)
 	)
-
-
-
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create log writer")
