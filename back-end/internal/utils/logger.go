@@ -19,19 +19,17 @@ func InitLogger() error {
 	}
 	time.Local = loc
 
-	// Create log directory if needed
+	// Ensure log directory exists
 	if _, err := os.Stat("/app/logs"); os.IsNotExist(err) {
-		err := os.MkdirAll("/app/logs", os.ModePerm)
-		if err != nil {
+		if err := os.MkdirAll("/app/logs", os.ModePerm); err != nil {
 			return errors.Wrap(err, "failed to create log directory")
 		}
 	}
 
 	writer, err := rotatelogs.New(
 		"/app/logs/app-log-%Y-%m-%d.log",
-		rotatelogs.WithRotationTime(24*time.Hour),     // Rotate daily
-		rotatelogs.WithMaxAge(7*24*time.Hour),         // Keep 7 days of logs
-		rotatelogs.WithRotationCount(7),               // Max 7 files
+		rotatelogs.WithRotationTime(24*time.Hour), // Rotate daily
+		rotatelogs.WithRotationCount(7),           // Keep last 7 logs
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to create log writer")
