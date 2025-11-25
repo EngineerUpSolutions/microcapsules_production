@@ -7,6 +7,8 @@ testing endpoings curls
 
 1
 
+nice curls     
+
 curl -X POST http://localhost:8080/proxy/microcapsules \
      -H "Content-Type: application/json" \
      -d '{
@@ -22,5 +24,30 @@ curl -X POST http://localhost:8080/proxy/microcapsules \
 curl -X POST http://localhost:8080/proxy/topics \
      -H "Content-Type: application/json" \
      -d '{"curso": "GUIANZA TURISTICA", "numero_temas": 5}'
+
+
+
+
+
+wrong curls
+
+1
+
+curl -X POST http://localhost:8080/proxy/topics \
+  -H "Content-Type: application/json" \
+  -d '{}'
+
+
+
+
+
+2
+
+curl -X POST http://localhost:8080/proxy/microcapsules \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tema": "Historia del cafe"
+  }'
+
 
 

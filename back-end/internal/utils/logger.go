@@ -26,11 +26,23 @@ func InitLogger() error {
 		}
 	}
 
+
+	// this one is for production
+	// writer, err := rotatelogs.New(
+	// 	"/app/logs/app-log-%Y-%m-%d.log",
+	// 	rotatelogs.WithRotationTime(24*time.Hour), // Rotate daily
+	// 	rotatelogs.WithRotationCount(7),           // Keep last 7 logs
+	// )
+
+	// this is for testing rotation files
 	writer, err := rotatelogs.New(
-		"/app/logs/app-log-%Y-%m-%d.log",
-		rotatelogs.WithRotationTime(24*time.Hour), // Rotate daily
-		rotatelogs.WithRotationCount(7),           // Keep last 7 logs
+		"/app/logs/app-log-%Y-%m-%d-%H-%M.log",         // Includes hour and minute
+		rotatelogs.WithRotationTime(5*time.Minute),     // Rotate every 5 minutes
+		rotatelogs.WithRotationCount(2),                // Keep last 2 log files
 	)
+
+
+
 	if err != nil {
 		return errors.Wrap(err, "failed to create log writer")
 	}

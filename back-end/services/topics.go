@@ -1,10 +1,10 @@
 package services
 
 import (
+	"io"
 	"bytes"
 	"net/http"
 	"time"
-
 	"microcapsules-backend/internal/utils"
 )
 
@@ -30,8 +30,11 @@ func CallTopicsAPI(jsonBody []byte) (*http.Response, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		utils.Logger.Printf("Topics API returned non-200 status: %d", resp.StatusCode)
+		body, _ := io.ReadAll(resp.Body)
+		defer resp.Body.Close()
+		utils.Logger.Printf("ERROR: Topics API returned status %d - Response: %s", resp.StatusCode, string(body))
 	}
+
 
 	return resp, nil
 }
