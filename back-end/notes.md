@@ -51,3 +51,21 @@ curl -X POST http://localhost:8080/proxy/microcapsules \
 
 
 
+
+
+---
+
+working between container communications
+
+1
+sudo docker exec -it microcapsules-frontend-1 sh
+
+
+
+2
+curl -X POST http://backend:8080/proxy/topics \
+  -H "Content-Type: application/json" \
+  -d '{"curso": "TEST CURSO", "numero_temas": 2}'
+
+
+---
