@@ -48,12 +48,20 @@ export default function PageClient() {
   }, []);
 
   return (
-    <main style={{ padding: '20px' }}>
-      <h1>Microcápsulas</h1>
-      <p>User authenticated ✔</p>
-      <pre style={{ background: '#111', padding: '15px', borderRadius: '8px' }}>
-        {JSON.stringify(userData, null, 2)}
+    // <main style={{ padding: '20px' }}>
+    //   <h1>Microcápsulas</h1>
+    //   <p>User authenticated ✔</p>
+    //   <pre style={{ background: '#111', padding: '15px', borderRadius: '8px' }}>
+    //     {JSON.stringify(userData, null, 2)}
+    //   </pre>
+    // </main>
+    <main className="min-h-screen p-8 bg-gray-100 text-gray-800">
+      <h1 className="text-4xl font-bold mb-4 text-blue-700">Microcápsulas</h1>
+      <p className="text-lg mb-4">User authenticated ✔</p>
+      <pre className="bg-black text-white p-4 rounded-md">
+      {JSON.stringify(userData, null, 2)}
       </pre>
     </main>
+
   );
 }
