@@ -1,42 +1,46 @@
-'use client';
+"use client";
 
-import { useSearchParams } from 'next/navigation';
-import CryptoJS from 'crypto-js';
-import { useEffect } from 'react';
+import { useSearchParams } from "next/navigation";
+import CryptoJS from "crypto-js";
+import { useEffect, useState } from "react";
+import { FlowShell } from "../components/layout/FlowShell";
+import { Step1Courses, Course } from "../components/steps/Step1Courses";
+
+type UserData = {
+  uid: string;
+  name: string;
+  courses: Course[];
+};
 
 export default function PageClient() {
   const searchParams = useSearchParams();
 
-  const uid = searchParams.get('uid');
-  const name = searchParams.get('name');
-  const rawCourses = searchParams.get('courses');
-  const sig = searchParams.get('sig');
+  const uid = searchParams.get("uid");
+  const name = searchParams.get("name");
+  const rawCourses = searchParams.get("courses");
+  const sig = searchParams.get("sig");
 
   if (!uid || !name || !rawCourses || !sig) {
     return <div>Missing parameters</div>;
   }
 
-  // 👉 1) Usamos el string JSON EXACTO que viene desde Moodle
+  // 👉 1) Use the EXACT JSON string from Moodle
   const decodedCoursesStr = decodeURIComponent(rawCourses);
 
   let courses: any[] = [];
   try {
-    // Solo para poder trabajar con el array después,
-    // pero la firma se hace con decodedCoursesStr, no con JSON.stringify(courses)
+    // Only to work with it as array; the signature uses decodedCoursesStr
     courses = JSON.parse(decodedCoursesStr);
   } catch (err) {
-    console.error('Error parsing courses', err);
+    console.error("Error parsing courses", err);
     return <div>Invalid courses</div>;
   }
 
-  // SECRET MUST MATCH MOODLE
-  // En un componente "use client", process.env.* no funciona como en el servidor,
-  // pero como el fallback es el MISMO string que en Moodle, estamos bien para ahora.
+  // SECRET MUST MATCH MOODLE (restored EXACTLY as your working version)
   const SECRET =
-    process.env.MICROCAPS_SECRET || 'k8Z3pL9qT2vX6sR1yB4nW7cH5mD0fG8Q';
+    process.env.MICROCAPS_SECRET || "k8Z3pL9qT2vX6sR1yB4nW7cH5mD0fG8Q";
 
-
-  // 👉 2) Construimos raw EXACTAMENTE igual que en PHP:
+  // 👉 2) Build raw EXACTLY like PHP:
   // $raw = $userid . '|' . $fullname . '|' . json_encode($filteredcourses);
   const raw = `${uid}|${name}|${decodedCoursesStr}`;
 
@@ -45,27 +49,71 @@ export default function PageClient() {
   const isValid = expectedSig === sig;
 
   if (!isValid) {
-    console.error('Invalid signature', { raw, expectedSig, sig });
+    console.error("Invalid signature", { raw, expectedSig, sig });
     return <div>INVALID ACCESS</div>;
   }
 
   // If valid → authentication success
-  const userData = { uid, name, courses };
+  const initialUserData: UserData = { uid, name, courses };
 
-  // Store session
+  // -------------------- flow state (new) --------------------
+  const [userData] = useState<UserData>(initialUserData);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
+  const [isContinuing, setIsContinuing] = useState(false);
+
+  // Store session (same as before)
   useEffect(() => {
-    localStorage.setItem('micro_user', JSON.stringify(userData));
+    localStorage.setItem("micro_user", JSON.stringify(userData));
   }, [userData]);
-  return (
-  <main className="min-h-screen p-8 flex items-center justify-center">
-    <div className="w-full max-w-4xl bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 p-8 text-white">
-      <h1 className="text-4xl font-bold mb-4">Microcápsulas</h1>
-      <p className="text-lg mb-4">User authenticated ✔</p>
-      <pre className="bg-black/60 text-white p-4 rounded-md text-sm overflow-auto max-h-[300px]">
-        {JSON.stringify(userData, null, 2)}
-      </pre>
-    </div>
-  </main>
-);
 
+  const handleContinueFromStep1 = async () => {
+    if (!selectedCourseId) return;
+    setIsContinuing(true);
+
+    try {
+      // Later we'll call generateTopics() here.
+      setStep(2);
+    } catch (err) {
+      console.error("Error continuing from step 1", err);
+    } finally {
+      setIsContinuing(false);
+    }
+  };
+
+  const handleBack = () => {
+    setStep((prev) => (prev > 1 ? ((prev - 1) as 1 | 2 | 3) : prev));
+  };
+
+  // -------------------- render --------------------
+  return (
+    <FlowShell
+      currentStep={step}
+      userName={userData.name}
+      showBack={step > 1}
+      onBack={handleBack}
+    >
+      {step === 1 && (
+        <Step1Courses
+          courses={userData.courses as Course[]}
+          selectedCourseId={selectedCourseId}
+          onSelectCourse={setSelectedCourseId}
+          onContinue={handleContinueFromStep1}
+          isContinuing={isContinuing}
+        />
+      )}
+
+      {step === 2 && (
+        <div className="text-slate-800">
+          Step 2 (Temas) – placeholder for now.
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className="text-slate-800">
+          Step 3 (Microcápsulas) – placeholder for now.
+        </div>
+      )}
+    </FlowShell>
+  );
 }
