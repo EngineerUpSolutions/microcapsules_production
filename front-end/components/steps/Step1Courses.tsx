@@ -54,14 +54,14 @@ export function Step1Courses({
       </div>
 
       {/* Courses list */}
-      <div className="bg-black rounded-2xl px-4 py-3 h-80 overflow-y-auto">
+      <div className="bg-black rounded-2xl px-4 pt-6 pb-6 max-h-72 overflow-y-auto">
         {courses.length === 0 && (
           <p className="text-sm text-gray-500 px-2 py-4">
             No se encontraron cursos.
           </p>
         )}
 
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-4">
           {courses.map((course) => {
             const selected = course.id === selectedCourseId;
             const { name, code } = splitNameAndCode(course.fullname);
