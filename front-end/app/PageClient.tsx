@@ -59,7 +59,8 @@ export default function PageClient() {
   // -------------------- flow state (new) --------------------
   const [userData] = useState<UserData>(initialUserData);
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
+  // const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [isContinuing, setIsContinuing] = useState(false);
 
   // Store session (same as before)

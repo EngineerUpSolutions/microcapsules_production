@@ -1,15 +1,15 @@
-// components/steps/Step1Courses.tsx
+import { CoursesIcon } from "../icons/CoursesIcon";
 import React from "react";
 
 export type Course = {
-  id: number;
+  id: string;       // Moodle sends id as string
   fullname: string;
 };
 
 type Step1CoursesProps = {
   courses: Course[];
-  selectedCourseId: number | null;
-  onSelectCourse: (courseId: number) => void;
+  selectedCourseId: string | null;
+  onSelectCourse: (courseId: string) => void;
   onContinue: () => void;
   isContinuing?: boolean;
 };
@@ -25,19 +25,20 @@ export function Step1Courses({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Section title */}
-      <div>
-        <h2 className="flex items-center gap-2 text-base font-semibold text-sky-900">
-          {/* simple icon placeholder */}
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-sky-900 text-sm">
-            📚
-          </span>
-          Cursos inscritos
-        </h2>
-        <p className="text-xs text-gray-500 mt-1">
-          Selecciona uno de tus cursos y da click en continuar.
-        </p>
-      </div>
+      
+    <div>
+      <h2 className="flex items-center gap-2 text-base font-semibold text-sky-900">
+      <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-100">
+        <CoursesIcon className="h-5 w-5" />
+      </span>
+        <span>Cursos inscritos</span>
+      </h2>
+      <p className="text-xs text-gray-500 mt-1">
+        Selecciona uno de tus cursos y da click en continuar.
+      </p>
+    </div>
+
+
 
       {/* Courses list */}
       <div className="bg-slate-100 rounded-2xl p-2 max-h-72 overflow-y-auto">
