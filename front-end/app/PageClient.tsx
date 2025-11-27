@@ -35,6 +35,7 @@ export default function PageClient() {
   const SECRET =
     process.env.MICROCAPS_SECRET || 'k8Z3pL9qT2vX6sR1yB4nW7cH5mD0fG8Q';
 
+
   // 👉 2) Construimos raw EXACTAMENTE igual que en PHP:
   // $raw = $userid . '|' . $fullname . '|' . json_encode($filteredcourses);
   const raw = `${uid}|${name}|${decodedCoursesStr}`;
