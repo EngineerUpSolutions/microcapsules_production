@@ -16,6 +16,7 @@ services:
     ports:
       - "3000:3000"
     environment:
+      NEXT_PUBLIC_MICROCAPS_SECRET: "k8Z3pL9qT2vX6sR1yB4nW7cH5mD0fG8Q"
       NODE_ENV: "production"
       NEXT_PUBLIC_BACKEND_URL: "http://backend:8080"
     depends_on:

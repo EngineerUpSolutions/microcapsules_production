@@ -37,7 +37,7 @@ foreach ($courses as $c) {
 $raw = $userid . '|' . $fullname . '|' . json_encode($filteredcourses);
 
 // SIGNATURE
-$secret = 'CHANGE_THIS_SECRET_32_CHARACTERS';
+$secret = 'k8Z3pL9qT2vX6sR1yB4nW7cH5mD0fG8Q';
 $sig = hash_hmac('sha256', $raw, $secret);
 
 $encodedcourses = urlencode(json_encode($filteredcourses));

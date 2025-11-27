@@ -42,3 +42,13 @@ sena@pop-os:~/Documents/microcapsules/front-end/lib$
 
 
 valdiar en api.ts the base route in case the port changes
+
+
+
+4
+validate authentication method, change key if necessary
+
+/var/www/html/zajuna/local/microcapsulas/index.php
+/home/sena/Documents/microcapsules/docker-compose.yml
+
+
