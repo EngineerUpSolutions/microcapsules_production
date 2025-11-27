@@ -16,6 +16,41 @@ export function FlowShell({
   showBack = false,
   onBack,
 }: FlowShellProps) {
+  // Text under the title, depends on the step
+  const description = () => {
+    if (currentStep === 1) {
+      return (
+        <>
+          Hola, <span className="font-semibold">{userName}</span> aquí podrás
+          ver los cursos en los cuales estás enrolado y activos. Selecciona uno
+          y haz clic en{" "}
+          <span className="font-semibold">“Continuar”</span> para seguir al
+          siguiente paso.
+        </>
+      );
+    }
+
+    if (currentStep === 2) {
+      return (
+        <>
+          Hola, <span className="font-semibold">{userName}</span> aquí podrás
+          ver los temas asociados al curso seleccionado. Elige un tema y haz
+          clic en <span className="font-semibold">“Continuar”</span> para ver
+          las microcápsulas.
+        </>
+      );
+    }
+
+    // currentStep === 3
+    return (
+      <>
+        Hola, <span className="font-semibold">{userName}</span> aquí podrás ver
+        las microcápsulas generadas para el tema seleccionado. Copia el
+        contenido que necesites usando el botón de cada microcápsula.
+      </>
+    );
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
       {/* Card */}
@@ -25,17 +60,7 @@ export function FlowShell({
           Microcápsulas
         </h1>
 
-
-        <p className="text-sm text-gray-600 mb-6">
-          Hola, <span className="font-semibold">{userName}</span> aquí
-          podrás ver la descripción del funcionamiento de este módulo en el que
-          podrás lograr x resultado.
-        </p>
-
-
-
-
-
+        <p className="text-sm text-gray-600 mb-6">{description()}</p>
 
         {/* Progress bar */}
         <div className="flex items-center gap-3 mb-8">
@@ -52,7 +77,7 @@ export function FlowShell({
         {/* Content (steps) */}
         <div className="mb-10">{children}</div>
 
-        {/* Footer inside card (back button + continue can live in step components) */}
+        {/* Footer inside card (back button) */}
         {showBack && onBack && (
           <button
             type="button"

@@ -1,9 +1,8 @@
-// components/steps/Step1Courses.tsx
-import React from "react";
 import { CoursesIcon } from "../icons/CoursesIcon";
+import React from "react";
 
 export type Course = {
-  id: string; // Moodle sends id as string
+  id: string;       // Moodle sends id as string
   fullname: string;
 };
 
@@ -14,20 +13,6 @@ type Step1CoursesProps = {
   onContinue: () => void;
   isContinuing?: boolean;
 };
-
-// Helper: split "VENTA DE PRODUCTOS EN LINEA (2977856)"
-// → name: "VENTA DE PRODUCTOS EN LINEA"
-// → code: "2977856"
-function splitNameAndCode(fullname: string): { name: string; code: string } {
-  const match = fullname.match(/\((\d+)\)\s*$/);
-  if (match) {
-    const code = match[1];
-    const name = fullname.replace(/\s*\(\d+\)\s*$/, "").trim();
-    return { name, code };
-  }
-  // fallback: no code in parentheses
-  return { name: fullname, code: "" };
-}
 
 export function Step1Courses({
   courses,
@@ -40,21 +25,23 @@ export function Step1Courses({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Title + helper text */}
-      <div>
-        <h2 className="flex items-center gap-2 text-base font-semibold text-sky-900">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-100">
-            <CoursesIcon className="h-5 w-5" />
-          </span>
-          <span>Cursos inscritos</span>
-        </h2>
-        <p className="text-xs text-gray-500 mt-1">
-          Selecciona uno de tus cursos y da click en continuar.
-        </p>
-      </div>
+      
+    <div>
+      <h2 className="flex items-center gap-2 text-base font-semibold text-sky-900">
+      <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-100">
+        <CoursesIcon className="h-5 w-5" />
+      </span>
+        <span>Cursos inscritos</span>
+      </h2>
+      <p className="text-xs text-gray-500 mt-1">
+        Selecciona uno de tus cursos y da click en continuar.
+      </p>
+    </div>
+
+
 
       {/* Courses list */}
-      <div className="bg-black rounded-2xl px-4 py-3 h-80 overflow-y-auto">
+      <div className="bg-slate-100 rounded-2xl p-2 max-h-72 overflow-y-auto">
         {courses.length === 0 && (
           <p className="text-sm text-gray-500 px-2 py-4">
             No se encontraron cursos.
@@ -64,19 +51,17 @@ export function Step1Courses({
         <ul className="flex flex-col gap-2">
           {courses.map((course) => {
             const selected = course.id === selectedCourseId;
-            const { name, code } = splitNameAndCode(course.fullname);
-
             return (
               <li
                 key={course.id}
-                className={`flex items-center gap-3 rounded-2xl bg-white px-4 py-3 cursor-pointer border transition-colors ${
-                  selected ? "border-green-500" : "border-gray-200"
+                className={`flex items-center gap-3 rounded-xl bg-white px-3 py-3 cursor-pointer border ${
+                  selected ? "border-green-500" : "border-transparent"
                 }`}
                 onClick={() => onSelectCourse(course.id)}
               >
                 {/* Checkbox visual */}
                 <div
-                  className={`h-5 w-5 rounded-md border flex items-center justify-center transition-colors ${
+                  className={`h-5 w-5 rounded-md border flex items-center justify-center ${
                     selected
                       ? "border-green-500 bg-green-500"
                       : "border-gray-300 bg-white"
@@ -88,12 +73,12 @@ export function Step1Courses({
                 </div>
 
                 {/* Course code + name */}
-                <div className="flex flex-row items-center gap-3 flex-1">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3 flex-1">
                   <span className="inline-flex items-center justify-center rounded-md bg-green-100 text-green-700 text-xs font-semibold px-3 py-1">
-                    {code || course.id}
+                    {course.id}
                   </span>
                   <span className="text-sm text-slate-800 font-medium">
-                    {name}
+                    {course.fullname}
                   </span>
                 </div>
               </li>
