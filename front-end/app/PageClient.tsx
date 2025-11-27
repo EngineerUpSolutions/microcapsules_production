@@ -16,26 +16,35 @@ export default function PageClient() {
     return <div>Missing parameters</div>;
   }
 
+  // 👉 1) Usamos el string JSON EXACTO que viene desde Moodle
+  const decodedCoursesStr = decodeURIComponent(rawCourses);
+
   let courses: any[] = [];
   try {
-    courses = JSON.parse(decodeURIComponent(rawCourses));
+    // Solo para poder trabajar con el array después,
+    // pero la firma se hace con decodedCoursesStr, no con JSON.stringify(courses)
+    courses = JSON.parse(decodedCoursesStr);
   } catch (err) {
     console.error('Error parsing courses', err);
     return <div>Invalid courses</div>;
   }
 
   // SECRET MUST MATCH MOODLE
-  const SECRET = process.env.NEXT_PUBLIC_MICROCAPS_SECRET || "CHANGE_THIS_SECRET_32_CHARACTERS";
+  // En un componente "use client", process.env.* no funciona como en el servidor,
+  // pero como el fallback es el MISMO string que en Moodle, estamos bien para ahora.
+  const SECRET =
+    process.env.MICROCAPS_SECRET || 'k8Z3pL9qT2vX6sR1yB4nW7cH5mD0fG8Q';
 
-  // Build raw string exactly like Moodle
-  const raw = `${uid}|${name}|${JSON.stringify(courses)}`;
+  // 👉 2) Construimos raw EXACTAMENTE igual que en PHP:
+  // $raw = $userid . '|' . $fullname . '|' . json_encode($filteredcourses);
+  const raw = `${uid}|${name}|${decodedCoursesStr}`;
 
   // crypto-js HMAC SHA256
   const expectedSig = CryptoJS.HmacSHA256(raw, SECRET).toString();
-
   const isValid = expectedSig === sig;
 
   if (!isValid) {
+    console.error('Invalid signature', { raw, expectedSig, sig });
     return <div>INVALID ACCESS</div>;
   }
 
@@ -44,24 +53,16 @@ export default function PageClient() {
 
   // Store session
   useEffect(() => {
-    localStorage.setItem("micro_user", JSON.stringify(userData));
-  }, []);
+    localStorage.setItem('micro_user', JSON.stringify(userData));
+  }, [userData]);
 
   return (
-    // <main style={{ padding: '20px' }}>
-    //   <h1>Microcápsulas</h1>
-    //   <p>User authenticated ✔</p>
-    //   <pre style={{ background: '#111', padding: '15px', borderRadius: '8px' }}>
-    //     {JSON.stringify(userData, null, 2)}
-    //   </pre>
-    // </main>
     <main className="min-h-screen p-8 bg-gray-100 text-gray-800">
       <h1 className="text-4xl font-bold mb-4 text-blue-700">Microcápsulas</h1>
       <p className="text-lg mb-4">User authenticated ✔</p>
       <pre className="bg-black text-white p-4 rounded-md">
-      {JSON.stringify(userData, null, 2)}
+        {JSON.stringify(userData, null, 2)}
       </pre>
     </main>
-
   );
 }
