@@ -24,11 +24,18 @@ export function FlowShell({
         <h1 className="text-3xl font-bold text-sky-900 mb-2">
           Microcápsulas
         </h1>
+
+
         <p className="text-sm text-gray-600 mb-6">
-          Hola, <span className="font-semibold">Nombre de Usuario</span> aquí
+          Hola, <span className="font-semibold">{userName}</span> aquí
           podrás ver la descripción del funcionamiento de este módulo en el que
           podrás lograr x resultado.
         </p>
+
+
+
+
+
 
         {/* Progress bar */}
         <div className="flex items-center gap-3 mb-8">
