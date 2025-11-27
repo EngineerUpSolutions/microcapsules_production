@@ -57,13 +57,25 @@ export default function PageClient() {
     localStorage.setItem('micro_user', JSON.stringify(userData));
   }, [userData]);
 
+  // return (
+  //   <main className="min-h-screen p-8 bg-gray-100 text-gray-800">
+  //     <h1 className="text-4xl font-bold mb-4 text-blue-700">Microcápsulas</h1>
+  //     <p className="text-lg mb-4">User authenticated ✔</p>
+  //     <pre className="bg-black text-white p-4 rounded-md">
+  //       {JSON.stringify(userData, null, 2)}
+  //     </pre>
+  //   </main>
+  // );
   return (
-    <main className="min-h-screen p-8 bg-gray-100 text-gray-800">
-      <h1 className="text-4xl font-bold mb-4 text-blue-700">Microcápsulas</h1>
+  <main className="min-h-screen p-8 flex items-center justify-center">
+    <div className="w-full max-w-4xl bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 p-8 text-white">
+      <h1 className="text-4xl font-bold mb-4">Microcápsulas</h1>
       <p className="text-lg mb-4">User authenticated ✔</p>
-      <pre className="bg-black text-white p-4 rounded-md">
+      <pre className="bg-black/60 text-white p-4 rounded-md text-sm overflow-auto max-h-[300px]">
         {JSON.stringify(userData, null, 2)}
       </pre>
-    </main>
-  );
+    </div>
+  </main>
+);
+
 }
