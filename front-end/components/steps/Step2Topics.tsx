@@ -2,14 +2,10 @@
 import React from "react";
 import type { Course } from "./Step1Courses";
 import { TopicsIcon } from "../icons/TopicsIcon";
-
 type Step2TopicsProps = {
   selectedCourse: Course | null;
 };
-
 export function Step2Topics({ selectedCourse }: Step2TopicsProps) {
-
-
   if (!selectedCourse) {
     return (
       <div className="text-sm text-red-600">
@@ -22,7 +18,6 @@ export function Step2Topics({ selectedCourse }: Step2TopicsProps) {
   const name = match
     ? selectedCourse.fullname.replace(/\s*\(\d+\)\s*$/, "").trim()
     : selectedCourse.fullname;
-
 
   return (
     <div className="flex flex-col gap-4">
@@ -42,18 +37,12 @@ export function Step2Topics({ selectedCourse }: Step2TopicsProps) {
       </div>
 
       {/* Banner con el curso seleccionado */}
-      {/* <div className="rounded-2xl bg-[#e1f0ff] px-4 py-3 text-sm font-semibold text-slate-800">
-        {selectedCourse.fullname}
-      </div> */}
-
-      {/* Banner con el curso seleccionado */}
       <div className="rounded-2xl bg-[#e1f0ff] px-4 py-3 text-sm font-semibold text-slate-800 flex items-center gap-3">
         <span className="inline-flex items-center justify-center rounded-md bg-green-100 text-green-700 text-xs font-semibold px-3 py-1">
         {code}
         </span>
         <span>{name}</span>
       </div>
-
 
       {/* Placeholder de la lista de temas (estático por ahora) */}
       <div className="bg-[#f5f5f5] rounded-2xl px-4 py-3">

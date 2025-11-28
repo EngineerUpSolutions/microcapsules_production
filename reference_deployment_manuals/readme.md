@@ -52,3 +52,5 @@ validate authentication method, change key if necessary
 /home/sena/Documents/microcapsules/docker-compose.yml
 
 
+5
+reference the ip that it has to work in order to make the petition 
