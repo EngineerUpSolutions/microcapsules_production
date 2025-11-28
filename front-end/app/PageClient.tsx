@@ -25,12 +25,24 @@ function getCourseNameWithoutCode(fullname: string): string {
   return fullname;
 }
 export default function PageClient() {
+  // const searchParams = useSearchParams();
+
+  // const uid = searchParams.get("uid");
+  // const name = searchParams.get("name");
+  // const rawCourses = searchParams.get("courses");
+  // const sig = searchParams.get("sig");
   const searchParams = useSearchParams();
+
+  // Guard in case searchParams is null (TypeScript strict mode)
+  if (!searchParams) {
+    return <div>Missing parameters</div>;
+  }
 
   const uid = searchParams.get("uid");
   const name = searchParams.get("name");
   const rawCourses = searchParams.get("courses");
   const sig = searchParams.get("sig");
+
 
   if (!uid || !name || !rawCourses || !sig) {
     return <div>Missing parameters</div>;

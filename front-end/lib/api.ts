@@ -1,8 +1,6 @@
 // lib/api.ts
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || "http://backend:8080";
-
-
+  process.env.BACKEND_URL || "http://backend:8080";
   
 export async function generateTopics(curso: string, numero_temas: number) {
   const res = await fetch(`${BASE_URL}/proxy/topics`, {
@@ -20,7 +18,6 @@ export async function generateTopics(curso: string, numero_temas: number) {
   const json = await res.json();
   return json.data;
 }
-
 
 export async function generateMicrocapsules({
   tema,
