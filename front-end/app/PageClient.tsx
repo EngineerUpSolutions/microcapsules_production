@@ -5,6 +5,8 @@ import CryptoJS from "crypto-js";
 import { useEffect, useState } from "react";
 import { FlowShell } from "../components/layout/FlowShell";
 import { Step1Courses, Course } from "../components/steps/Step1Courses";
+import { Step2Topics } from "../components/steps/Step2Topics";
+
 
 type UserData = {
   uid: string;
@@ -63,17 +65,48 @@ export default function PageClient() {
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [isContinuing, setIsContinuing] = useState(false);
 
+  //proceeding with step 2
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+
   // Store session (same as before)
   useEffect(() => {
     localStorage.setItem("micro_user", JSON.stringify(userData));
   }, [userData]);
 
+  // const handleContinueFromStep1 = async () => {
+  //   if (!selectedCourseId) return;
+  //   setIsContinuing(true);
+
+  //   try {
+  //     // Later we'll call generateTopics() here.
+  //     setStep(2);
+  //   } catch (err) {
+  //     console.error("Error continuing from step 1", err);
+  //   } finally {
+  //     setIsContinuing(false);
+  //   }
+  // };
+
   const handleContinueFromStep1 = async () => {
     if (!selectedCourseId) return;
+
     setIsContinuing(true);
 
     try {
-      // Later we'll call generateTopics() here.
+      // 1) Buscar el curso completo
+      const course = userData.courses.find(
+        (c) => c.id === selectedCourseId
+      ) as Course | undefined;
+
+      if (!course) {
+        console.error("Course not found for id:", selectedCourseId);
+        return;
+      }
+
+      // 2) Guardar el curso en el estado para usarlo en Step 2
+      setSelectedCourse(course);
+
+      // 3) Pasar al paso 2
       setStep(2);
     } catch (err) {
       console.error("Error continuing from step 1", err);
@@ -105,9 +138,7 @@ export default function PageClient() {
       )}
 
       {step === 2 && (
-        <div className="text-slate-800">
-          Step 2 (Temas) – placeholder for now.
-        </div>
+         <Step2Topics selectedCourse={selectedCourse} />
       )}
 
       {step === 3 && (
