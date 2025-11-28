@@ -88,8 +88,11 @@ export default function PageClient() {
   const [isContinuing, setIsContinuing] = useState(false);
 
   //proceeding with step 2
+  //proceeding with step 2
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  const [topics, setTopics] = useState<string[]>([]); 
+  const [topics, setTopics] = useState<string[]>([]);
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+
   // Store session (same as before)
   useEffect(() => {
     localStorage.setItem("micro_user", JSON.stringify(userData));
@@ -119,7 +122,8 @@ export default function PageClient() {
 
       // 4) Save the selected course and topics for Step 2
       setSelectedCourse(course);
-      setTopics(topicsResponse.temas); // <-- this is the new line using the API data
+      setTopics(topicsResponse.temas);
+      setSelectedTopic(null); // reset previous selection if you change course
 
       // 5) Move to step 2
       setStep(2);
@@ -157,8 +161,14 @@ export default function PageClient() {
       )}
 
       {step === 2 && (
-        <Step2Topics selectedCourse={selectedCourse} topics={topics} />
+        <Step2Topics
+          selectedCourse={selectedCourse}
+          topics={topics}
+          selectedTopic={selectedTopic}
+          onSelectTopic={setSelectedTopic}
+        />
       )}
+
       {step === 3 && (
         <div className="text-slate-800">
           Step 3 (Microcápsulas) – placeholder for now.

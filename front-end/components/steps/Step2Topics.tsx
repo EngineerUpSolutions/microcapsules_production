@@ -4,9 +4,17 @@ import type { Course } from "./Step1Courses";
 import { TopicsIcon } from "../icons/TopicsIcon";
 type Step2TopicsProps = {
   selectedCourse: Course | null;
-  topics: string[];          
+  topics: string[];
+  selectedTopic: string | null;         
+  onSelectTopic: (topic: string) => void; 
 };
-export function Step2Topics({ selectedCourse, topics }: Step2TopicsProps) {
+
+export function Step2Topics({
+  selectedCourse,
+  topics,
+  selectedTopic,
+  onSelectTopic,
+}: Step2TopicsProps) {
   if (!selectedCourse) {
     return (
       <div className="text-sm text-red-600">
@@ -45,24 +53,48 @@ export function Step2Topics({ selectedCourse, topics }: Step2TopicsProps) {
         <span>{name}</span>
       </div>
 
-      {/* Lista de temas */}
-      <div className="bg-[#f5f5f5] rounded-2xl px-4 py-3">
+      {/* Lista de temas (selección única) */}
+      <div className="bg-black/80 rounded-2xl px-4 py-4">
         {topics.length === 0 ? (
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-400">
             No se recibieron temas del backend. Verifica la llamada a la API.
           </p>
         ) : (
           <ul className="flex flex-col gap-3">
-            {topics.map((topic, idx) => (
-              <li
-                key={idx}
-                className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3"
-              >
-                {/* solo visual, tipo checkbox */}
-                <div className="h-5 w-5 rounded-md border border-gray-300 bg-white" />
-                <span className="text-sm text-slate-800">{topic}</span>
-              </li>
-            ))}
+            {topics.map((topic, idx) => {
+              const isSelected = topic === selectedTopic;
+
+              return (
+                <li
+                  key={idx}
+                  onClick={() => onSelectTopic(topic)}
+                  className={`flex items-center gap-3 rounded-2xl px-4 py-3 cursor-pointer transition-colors ${
+                    isSelected ? "bg-green-900/60" : "bg-zinc-900"
+                  }`}
+                >
+                  {/* checkbox visual */}
+                  <div
+                    className={`h-5 w-5 rounded-md border flex items-center justify-center transition-colors ${
+                      isSelected
+                        ? "border-green-400 bg-green-500"
+                        : "border-gray-500 bg-transparent"
+                    }`}
+                  >
+                    {isSelected && (
+                      <span className="text-white text-xs font-bold">✓</span>
+                    )}
+                  </div>
+
+                  <span
+                    className={`text-sm font-medium ${
+                      isSelected ? "text-green-100" : "text-slate-100"
+                    }`}
+                  >
+                    {topic}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
