@@ -53,4 +53,17 @@ validate authentication method, change key if necessary
 
 
 5
-reference the ip that it has to work in order to make the petition 
+sena@pop-os:~/Documents/microcapsules/back-end/services$ pwd
+/home/sena/Documents/microcapsules/back-end/services
+sena@pop-os:~/Documents/microcapsules/back-end/services$ ll
+total 20
+drwxrwxr-x 2 sena sena 4096 Nov 25 15:48 ./
+drwxrwxr-x 6 sena sena 4096 Nov 27 09:23 ../
+-rw-rw-r-- 1 sena sena  417 Nov 25 16:38 client_pool.go
+-rw-rw-r-- 1 sena sena  964 Nov 25 16:15 microcapsules.go
+-rw-rw-r-- 1 sena sena  905 Nov 25 16:16 topics.go
+sena@pop-os:~/Documents/microcapsules/back-end/services$ 
+
+
+
+check the ip for the external api 

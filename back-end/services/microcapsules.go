@@ -9,7 +9,7 @@ import (
 )
 
 func CallMicrocapsulesAPI(jsonBody []byte) (*http.Response, error) {
-	url := "http://10.217.78.120:8000/api/v1/microcapsulas/generar"
+	url := "http://10.217.78.128:8000/api/v1/microcapsulas/generar"
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBody))
 	if err != nil {
