@@ -4,8 +4,9 @@ import type { Course } from "./Step1Courses";
 import { TopicsIcon } from "../icons/TopicsIcon";
 type Step2TopicsProps = {
   selectedCourse: Course | null;
+  topics: string[];          
 };
-export function Step2Topics({ selectedCourse }: Step2TopicsProps) {
+export function Step2Topics({ selectedCourse, topics }: Step2TopicsProps) {
   if (!selectedCourse) {
     return (
       <div className="text-sm text-red-600">
@@ -44,13 +45,32 @@ export function Step2Topics({ selectedCourse }: Step2TopicsProps) {
         <span>{name}</span>
       </div>
 
-      {/* Placeholder de la lista de temas (estático por ahora) */}
+      {/* Lista de temas */}
       <div className="bg-[#f5f5f5] rounded-2xl px-4 py-3">
-        <p className="text-sm text-gray-600">
-          Aquí irá la lista de temas generados por la API (por ahora es solo un
-          placeholder).
-        </p>
+        {topics.length === 0 ? (
+          <p className="text-sm text-gray-600">
+            No se recibieron temas del backend. Verifica la llamada a la API.
+          </p>
+        ) : (
+          <ul className="flex flex-col gap-3">
+            {topics.map((topic, idx) => (
+              <li
+                key={idx}
+                className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3"
+              >
+                {/* solo visual, tipo checkbox */}
+                <div className="h-5 w-5 rounded-md border border-gray-300 bg-white" />
+                <span className="text-sm text-slate-800">{topic}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
+
+
+
+
+
     </div>
   );
 }

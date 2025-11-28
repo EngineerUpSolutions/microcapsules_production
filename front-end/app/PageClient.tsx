@@ -89,7 +89,7 @@ export default function PageClient() {
 
   //proceeding with step 2
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-
+  const [topics, setTopics] = useState<string[]>([]); 
   // Store session (same as before)
   useEffect(() => {
     localStorage.setItem("micro_user", JSON.stringify(userData));
@@ -117,11 +117,13 @@ export default function PageClient() {
       const topicsResponse = await generateTopics(cleanName, 5);
       console.log("Topics from API:", topicsResponse);
 
-      // 4) Save the selected course for Step 2
+      // 4) Save the selected course and topics for Step 2
       setSelectedCourse(course);
+      setTopics(topicsResponse.temas); // <-- this is the new line using the API data
 
       // 5) Move to step 2
       setStep(2);
+
     } catch (err) {
       console.error("Error continuing from step 1", err);
     } finally {
@@ -155,9 +157,8 @@ export default function PageClient() {
       )}
 
       {step === 2 && (
-         <Step2Topics selectedCourse={selectedCourse} />
+        <Step2Topics selectedCourse={selectedCourse} topics={topics} />
       )}
-
       {step === 3 && (
         <div className="text-slate-800">
           Step 3 (Microcápsulas) – placeholder for now.
