@@ -37,3 +37,31 @@ export async function generateTopics(
   // Backend returns: { data: { curso, total_generados, temas }, meta: {...} }
   return json.data as TopicsData;
 }
+// Call Next.js API route -> backend /proxy/microcapsules
+export async function generateMicrocapsules(
+  tema: string,
+  min_caracteres: number,
+  max_caracteres: number,
+  cantidad_microcapsulas: number
+) {
+  const resp = await fetch("/api/microcapsules", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      tema,
+      min_caracteres,
+      max_caracteres,
+      cantidad_microcapsulas,
+    }),
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text();
+    console.error("Error from /api/microcapsules:", text);
+    throw new Error("Failed to generate microcapsules");
+  }
+
+  const json = await resp.json();
+  // backend returns: { data: { tema, microcapsulas: string[] }, meta: ... }
+  return json.data; // { tema, microcapsulas }
+}

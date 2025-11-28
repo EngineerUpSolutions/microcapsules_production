@@ -5,15 +5,20 @@ import { TopicsIcon } from "../icons/TopicsIcon";
 type Step2TopicsProps = {
   selectedCourse: Course | null;
   topics: string[];
-  selectedTopic: string | null;         
-  onSelectTopic: (topic: string) => void; 
+  selectedTopic: string | null;
+  onSelectTopic: (topic: string) => void;
+  onContinue: () => void;
+  isContinuing: boolean;
 };
+
 
 export function Step2Topics({
   selectedCourse,
   topics,
   selectedTopic,
   onSelectTopic,
+  onContinue,
+  isContinuing,
 }: Step2TopicsProps) {
   if (!selectedCourse) {
     return (
@@ -52,7 +57,6 @@ export function Step2Topics({
         </span>
         <span>{name}</span>
       </div>
-
       {/* Lista de temas (selección única) */}
       <div className="bg-black/80 rounded-2xl px-4 py-4">
         {topics.length === 0 ? (
@@ -99,10 +103,21 @@ export function Step2Topics({
         )}
       </div>
 
-
-
-
-
+      {/* Botón Continuar */}
+      <div className="flex justify-end mt-2">
+        <button
+          type="button"
+          disabled={!selectedTopic || isContinuing}
+          onClick={onContinue}
+          className={`px-6 py-2 rounded-full text-sm font-medium shadow-sm transition-colors ${
+            !selectedTopic || isContinuing
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+              : "bg-sky-900 text-white hover:bg-sky-800"
+          }`}
+        >
+          {isContinuing ? "Generando..." : "Continuar"}
+        </button>
+      </div>
     </div>
   );
 }

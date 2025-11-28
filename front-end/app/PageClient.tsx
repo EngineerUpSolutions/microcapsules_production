@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { FlowShell } from "../components/layout/FlowShell";
 import { Step1Courses, Course } from "../components/steps/Step1Courses";
 import { Step2Topics } from "../components/steps/Step2Topics";
-import { generateTopics } from "@/lib/api";
-
+import { Step3Microcaps } from "../components/steps/Step3Microcaps";
+import { generateTopics, generateMicrocapsules } from "@/lib/api";
 
 
 type UserData = {
@@ -92,6 +92,7 @@ export default function PageClient() {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [topics, setTopics] = useState<string[]>([]);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [microcapsules, setMicrocapsules] = useState<string[]>([]);
 
   // Store session (same as before)
   useEffect(() => {
@@ -99,7 +100,7 @@ export default function PageClient() {
   }, [userData]);
 
   //handling handleContinueFromStep1
-    const handleContinueFromStep1 = async () => {
+  const handleContinueFromStep1 = async () => {
     if (!selectedCourseId) return;
     setIsContinuing(true);
     try {
@@ -120,13 +121,22 @@ export default function PageClient() {
       const topicsResponse = await generateTopics(cleanName, 5);
       console.log("Topics from API:", topicsResponse);
 
+
+
+
+
       // 4) Save the selected course and topics for Step 2
       setSelectedCourse(course);
       setTopics(topicsResponse.temas);
-      setSelectedTopic(null); // reset previous selection if you change course
+      setSelectedTopic(null);        // reset previous topic selection
+      setMicrocapsules([]);          // clear microcapsules from previous runs
 
       // 5) Move to step 2
       setStep(2);
+
+
+
+
 
     } catch (err) {
       console.error("Error continuing from step 1", err);
@@ -134,6 +144,32 @@ export default function PageClient() {
       setIsContinuing(false);
     }
   };
+
+  const handleContinueFromStep2 = async () => {
+    if (!selectedTopic) return; // if no topic is selected, do nothing
+
+    setIsContinuing(true);
+    try {
+      // For now, fixed values similar to your curl test
+      const data = await generateMicrocapsules(
+        selectedTopic.trim(),
+        500, // min_caracteres
+        600, // max_caracteres
+        5    // cantidad_microcapsulas
+      );
+
+      console.log("Microcapsules from API:", data);
+
+      // data = { tema, microcapsulas: string[] }
+      setMicrocapsules(data.microcapsulas || []);
+      setStep(3); // go to step 3
+    } catch (err) {
+      console.error("Error continuing from step 2", err);
+    } finally {
+      setIsContinuing(false);
+    }
+  };
+
 
   //handling handleContinueFromStep1
 
@@ -166,14 +202,19 @@ export default function PageClient() {
           topics={topics}
           selectedTopic={selectedTopic}
           onSelectTopic={setSelectedTopic}
+          onContinue={handleContinueFromStep2}
+          isContinuing={isContinuing}
         />
       )}
 
       {step === 3 && (
-        <div className="text-slate-800">
-          Step 3 (Microcápsulas) – placeholder for now.
-        </div>
+        <Step3Microcaps
+          selectedCourse={selectedCourse}
+          selectedTopic={selectedTopic}
+          microcapsules={microcapsules}
+        />
       )}
+
     </FlowShell>
   );
 }
