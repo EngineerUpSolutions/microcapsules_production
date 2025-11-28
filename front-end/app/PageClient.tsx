@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { FlowShell } from "../components/layout/FlowShell";
 import { Step1Courses, Course } from "../components/steps/Step1Courses";
 import { Step2Topics } from "../components/steps/Step2Topics";
-import { generateTopics } from "../lib/api";
+import { generateTopics } from "@/lib/api";
 
 
 
@@ -96,10 +96,9 @@ export default function PageClient() {
   }, [userData]);
 
   //handling handleContinueFromStep1
-  const handleContinueFromStep1 = async () => {
+    const handleContinueFromStep1 = async () => {
     if (!selectedCourseId) return;
     setIsContinuing(true);
-
     try {
       // 1) Find full course object
       const course = userData.courses.find(
@@ -114,16 +113,14 @@ export default function PageClient() {
       // 2) Get the clean name (without the numeric code at the end)
       const cleanName = getCourseNameWithoutCode(course.fullname);
 
-      // 3) Call backend to generate 5 topics
-      const topics = await generateTopics(cleanName, 5);
+      // 3) Call backend through frontend API route and log the topics
+      const topicsResponse = await generateTopics(cleanName, 5);
+      console.log("Topics from API:", topicsResponse);
 
-      // 4) Log what we got from the API (for now)
-      console.log("Topics from API:", topics);
-
-      // 5) Save selected course for Step 2
+      // 4) Save the selected course for Step 2
       setSelectedCourse(course);
 
-      // 6) Go to Step 2
+      // 5) Move to step 2
       setStep(2);
     } catch (err) {
       console.error("Error continuing from step 1", err);
@@ -131,6 +128,7 @@ export default function PageClient() {
       setIsContinuing(false);
     }
   };
+
   //handling handleContinueFromStep1
 
 
