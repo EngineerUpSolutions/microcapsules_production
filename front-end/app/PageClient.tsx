@@ -86,7 +86,7 @@ export default function PageClient() {
   // const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [isContinuing, setIsContinuing] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   //proceeding with step 2
   //proceeding with step 2
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
@@ -140,6 +140,7 @@ export default function PageClient() {
 
     } catch (err) {
       console.error("Error continuing from step 1", err);
+      setErrorMessage("Servicio temporalmente fuera de servicio al generar los temas. Por favor inténtalo de nuevo más tarde.");
     } finally {
       setIsContinuing(false);
     }
@@ -165,6 +166,7 @@ export default function PageClient() {
       setStep(3); // go to step 3
     } catch (err) {
       console.error("Error continuing from step 2", err);
+      setErrorMessage("Servicio temporalmente fuera de servicio al generar las microcápsulas. Por favor inténtalo de nuevo más tarde.");
     } finally {
       setIsContinuing(false);
     }
@@ -179,13 +181,96 @@ export default function PageClient() {
   };
 
   // -------------------- render --------------------
-  return (
+  // return (
+  //   <FlowShell
+  //     currentStep={step}
+  //     userName={userData.name}
+  //     showBack={step > 1}
+  //     onBack={handleBack}
+  //   >
+  //     {step === 1 && (
+  //       <Step1Courses
+  //         courses={userData.courses as Course[]}
+  //         selectedCourseId={selectedCourseId}
+  //         onSelectCourse={setSelectedCourseId}
+  //         onContinue={handleContinueFromStep1}
+  //         isContinuing={isContinuing}
+  //       />
+  //     )}
+
+  //     {step === 2 && (
+  //       <Step2Topics
+  //         selectedCourse={selectedCourse}
+  //         topics={topics}
+  //         selectedTopic={selectedTopic}
+  //         onSelectTopic={setSelectedTopic}
+  //         onContinue={handleContinueFromStep2}
+  //         isContinuing={isContinuing}
+  //       />
+  //     )}
+
+  //     {step === 3 && (
+  //       <Step3Microcaps
+  //         selectedCourse={selectedCourse}
+  //         selectedTopic={selectedTopic}
+  //         microcapsules={microcapsules}
+  //       />
+  //     )}
+
+  //   </FlowShell>
+  // );
+    return (
     <FlowShell
       currentStep={step}
       userName={userData.name}
       showBack={step > 1}
       onBack={handleBack}
     >
+      {errorMessage && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "rgba(0,0,0,0.5)",
+            zIndex: 9999,
+          }}
+        >
+          <div
+            style={{
+              background: "white",
+              padding: "1.5rem",
+              borderRadius: "0.75rem",
+              maxWidth: "400px",
+              width: "100%",
+              color: "#111827",
+            }}
+          >
+            <h2 style={{ marginBottom: "0.5rem", fontWeight: 600 }}>
+              Servicio no disponible
+            </h2>
+            <p style={{ marginBottom: "1rem", fontSize: "0.9rem" }}>
+              {errorMessage}
+            </p>
+            <button
+              onClick={() => setErrorMessage(null)}
+              style={{
+                marginLeft: "auto",
+                display: "block",
+                padding: "0.5rem 1rem",
+                borderRadius: "0.5rem",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+
       {step === 1 && (
         <Step1Courses
           courses={userData.courses as Course[]}
@@ -217,4 +302,5 @@ export default function PageClient() {
 
     </FlowShell>
   );
+
 }
