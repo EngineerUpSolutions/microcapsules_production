@@ -33,7 +33,7 @@ export function FlowShell({
     if (currentStep === 2) {
       return (
         <>
-          Hola, <span className="font-semibold">{userName}</span> aquí podrás
+          <span className="font-semibold">{userName}</span> aquí podrás
           ver los temas asociados al curso seleccionado. Elige un tema y haz
           clic en <span className="font-semibold">“Continuar”</span> para ver
           las microcápsulas.
@@ -44,17 +44,34 @@ export function FlowShell({
     // currentStep === 3
     return (
       <>
-        Hola, <span className="font-semibold">{userName}</span> aquí podrás ver
+        <span className="font-semibold">{userName}</span> aquí podrás ver
         las microcápsulas generadas para el tema seleccionado. Copia el
         contenido que necesites usando el botón de cada microcápsula.
       </>
     );
   };
 
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
+return (
+  <div
+    className="
+      h-screen overflow-hidden
+      flex flex-col items-center
+      justify-center px-4 pt-6 pb-0
+      sm:justify-start sm:pt-[49px] sm:pb-0
+    "
+  >
+
+
       {/* Card */}
-      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-xl p-10 relative">
+      <div
+        className="
+          w-full max-w-[720px] bg-white rounded-xl
+          shadow-[0_2px_5px_0_#c1c1c1]
+          px-4 pt-6 pb-4                  /* mobile */
+          sm:px-[26px] sm:pt-8 sm:pb-[10px]  /* >= 640px: closer to Figma */
+          relative
+        "
+      >
         {/* Header */}
         <h1 className="text-3xl font-bold text-sky-900 mb-2">
           Microcápsulas
@@ -90,8 +107,8 @@ export function FlowShell({
       </div>
 
       {/* Global footer */}
-      <footer className="mt-6 text-xs text-slate-100/80">
-        <div className="flex items-center gap-4">
+      <footer className="mt-10 mb-10 text-[11px] sm:text-xs text-slate-100/80">
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
           <span>Copyright © 2025</span>
           <span className="w-px h-4 bg-slate-100/50" />
           <span>LMS ZAJUNA</span>
@@ -99,6 +116,10 @@ export function FlowShell({
           <span>Todos los derechos reservados</span>
         </div>
       </footer>
+
+
+
+
     </div>
   );
 }
