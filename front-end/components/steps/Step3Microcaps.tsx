@@ -2,7 +2,7 @@
 import React from "react";
 import type { Course } from "./Step1Courses";
 import { TopicsIcon } from "../icons/TopicsIcon"; // we reuse the same icon for now
-
+import { MicrocapsIcon } from "../icons/MicrocapsIcon";
 type Step3MicrocapsProps = {
   selectedCourse: Course | null;
   selectedTopic: string | null;
@@ -40,7 +40,7 @@ export function Step3Microcaps({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Header */}
+      {/* Header
       <div>
         <h2 className="flex items-center gap-2 text-base font-semibold text-sky-900">
           <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-100">
@@ -53,7 +53,7 @@ export function Step3Microcaps({
           Copia el texto de la microcápsula que desees, usando el icono de
           copia en cada tarjeta.
         </p>
-      </div>
+      </div> */}
 
       {/* Banner curso */}
       <div className="rounded-2xl bg-[#e1f0ff] px-4 py-3 text-sm font-semibold text-slate-800 flex items-center gap-3">
@@ -86,7 +86,9 @@ export function Step3Microcaps({
                   <div className="flex items-center gap-2">
                     <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-800">
                       {/* Simple microcápsula icon (can be replaced later) */}
-                      <span className="text-xs">Ⓜ</span>
+                      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-800">
+                      <MicrocapsIcon className="h-4 w-4" />
+                      </span>
                     </span>
                     <span>Microcápsula #{idx + 1}</span>
                   </div>
