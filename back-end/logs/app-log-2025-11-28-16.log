@@ -1,0 +1,3 @@
+2025/11/28 16:30:14 Topics API call error: Post "http://10.217.78.128:8000/api/v1/temas/generar": dial tcp 10.217.78.128:8000: i/o timeout
+2025/11/28 16:30:27 Topics API call error: Post "http://10.217.78.128:8000/api/v1/temas/generar": dial tcp 10.217.78.128:8000: i/o timeout
+2025/11/28 16:30:45 Topics API call error: Post "http://10.217.78.128:8000/api/v1/temas/generar": dial tcp 10.217.78.128:8000: i/o timeout
