@@ -67,25 +67,28 @@ export function Step1Courses({
             const { name, code } = splitNameAndCode(course.fullname);
 
             return (
+              // <li
+              //   key={course.id}
+              //   className={`flex items-center gap-3 rounded-2xl bg-white px-4 py-3 cursor-pointer border transition-colors ${
+              //     selected ? "border-green-500" : "border-gray-200"
+              //   }`}
+              //   onClick={() => onSelectCourse(course.id)}
+              // >
               <li
                 key={course.id}
-                className={`flex items-center gap-3 rounded-2xl bg-white px-4 py-3 cursor-pointer border transition-colors ${
-                  selected ? "border-green-500" : "border-gray-200"
-                }`}
+                className={`
+                  flex items-center gap-3 rounded-2xl px-4 py-3 cursor-pointer
+                  transition-colors
+
+                  border-none
+                  ${selected ? "bg-[#D0EED0]" : "bg-white"}
+                  hover:bg-[#D0EED0]"
+                `}
                 onClick={() => onSelectCourse(course.id)}
               >
-                {/* Checkbox visual */}
-                {/* <div
-                  className={`h-5 w-5 rounded-md border flex items-center justify-center transition-colors ${
-                    selected
-                      ? "border-green-500 bg-green-500"
-                      : "border-gray-300 bg-white"
-                  }`}
-                >
-                  {selected && (
-                    <span className="text-white text-xs font-bold">✓</span>
-                  )}
-                </div> */}
+
+
+
                 {/* Checkbox visual */}
                 <div
                   className={`
@@ -94,13 +97,14 @@ export function Step1Courses({
                     border-[1.8px]
                     flex items-center justify-center
                     transition-colors
-                    ${selected ? "border-green-500 bg-green-500" : "border-[#96A8B6] bg-white"}
+                    ${selected ? "bg-[#00AA00] border-transparent" : "bg-white border-[#96A8B6]"}
                   `}
                 >
                   {selected && (
                     <span className="text-white text-sm font-bold leading-none">✓</span>
                   )}
                 </div>
+
 
                 {/* Course code + name */}
                 <div className="flex flex-row items-center gap-3 flex-1">

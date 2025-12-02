@@ -1,5 +1,6 @@
 // components/layout/FlowShell.tsx
 import React from "react";
+import { CloseTab } from "../icons/CloseTab";
 
 type FlowShellProps = {
   currentStep: 1 | 2 | 3;
