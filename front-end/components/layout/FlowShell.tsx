@@ -1,6 +1,7 @@
 // components/layout/FlowShell.tsx
 import React from "react";
 import { CloseTab } from "../icons/CloseTab";
+import { BackButtonStep2Step3 } from "../icons/BackButtonStep2Step3";
 
 type FlowShellProps = {
   currentStep: 1 | 2 | 3;
@@ -148,11 +149,18 @@ export function FlowShell({
             onClick={onBack}
             className="
               absolute left-8 bottom-8
-              w-10 h-10 rounded-full bg-green-500 text-white
-              flex items-center justify-center text-xl shadow-md
+              flex items-center justify-center
+              transition-transform duration-200
+              hover:scale-105 active:scale-95
+              cursor-pointer
             "
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0
+            }}
           >
-            «
+            <BackButtonStep2Step3 />
           </button>
         )}
       </div>

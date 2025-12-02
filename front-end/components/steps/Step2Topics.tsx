@@ -2,6 +2,7 @@
 import React from "react";
 import type { Course } from "./Step1Courses";
 import { TopicsIcon } from "../icons/TopicsIcon";
+import { BackButtonStep2Step3 } from "../icons/BackButtonStep2Step3";
 type Step2TopicsProps = {
   selectedCourse: Course | null;
   topics: string[];
