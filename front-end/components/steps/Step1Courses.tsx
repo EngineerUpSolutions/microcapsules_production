@@ -75,7 +75,7 @@ export function Step1Courses({
                 onClick={() => onSelectCourse(course.id)}
               >
                 {/* Checkbox visual */}
-                <div
+                {/* <div
                   className={`h-5 w-5 rounded-md border flex items-center justify-center transition-colors ${
                     selected
                       ? "border-green-500 bg-green-500"
@@ -85,13 +85,42 @@ export function Step1Courses({
                   {selected && (
                     <span className="text-white text-xs font-bold">✓</span>
                   )}
+                </div> */}
+                {/* Checkbox visual */}
+                <div
+                  className={`
+                    h-6 w-6
+                    rounded-[6px]
+                    border-[1.8px]
+                    flex items-center justify-center
+                    transition-colors
+                    ${selected ? "border-green-500 bg-green-500" : "border-[#96A8B6] bg-white"}
+                  `}
+                >
+                  {selected && (
+                    <span className="text-white text-sm font-bold leading-none">✓</span>
+                  )}
                 </div>
 
                 {/* Course code + name */}
                 <div className="flex flex-row items-center gap-3 flex-1">
-                  <span className="inline-flex items-center justify-center rounded-md bg-green-100 text-green-700 text-xs font-semibold px-3 py-1">
-                    {code || course.id}
+                  
+
+                  <span
+                      className="
+                      inline-flex items-center justify-center
+                      rounded-[6px]
+                      bg-[#E4F7E4]
+                      text-[#208820]
+                      text-xs font-semibold
+                      px-[6px] py-[4px]
+                      "
+                      >
+                      {code || course.id}
                   </span>
+
+
+
                   <span className="text-sm text-slate-800 font-medium">
                     {name}
                   </span>
