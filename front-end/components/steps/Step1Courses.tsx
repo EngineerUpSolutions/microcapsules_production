@@ -130,11 +130,12 @@ export function Step1Courses({
           type="button"
           disabled={!hasSelection || isContinuing}
           onClick={onContinue}
-          className={`px-6 py-2 rounded-full text-sm font-medium shadow-sm transition-colors ${
-            !hasSelection || isContinuing
+          className={`px-4 py-2.5 rounded-xl text-sm font-medium shadow-sm transition-colors ${
+              !hasSelection || isContinuing
               ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-              : "bg-sky-900 text-white hover:bg-sky-800"
+              : "bg-[#349A00] text-white hover:bg-[#2E8A00]"
           }`}
+
         >
           {isContinuing ? "Cargando..." : "Continuar"}
         </button>
