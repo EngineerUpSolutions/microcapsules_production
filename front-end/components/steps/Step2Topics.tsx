@@ -28,7 +28,7 @@ export function Step2Topics({
     );
   }
 
-  // Same split logic as Step1
+  // Extract course code and cleaned name
   const match = selectedCourse.fullname.match(/\((\d+)\)\s*$/);
   const code = match ? match[1] : selectedCourse.id;
   const name = match
@@ -52,20 +52,41 @@ export function Step2Topics({
         </p>
       </div>
 
-      {/* Course banner */}
-      <div className="rounded-2xl bg-[#e1f0ff] px-4 py-3 text-sm font-semibold text-slate-800 flex items-center gap-3">
-        <span className="inline-flex items-center justify-center rounded-md bg-green-100 text-green-700 text-xs font-semibold px-3 py-1">
-          {code}
-        </span>
-        <span>{name}</span>
-      </div>
+      {/* Grey container (same as Step1) */}
+      <div className="bg-[#F1F1F1] rounded-xl px-4 pt-6 pb-6 max-h-[420px] overflow-y-auto flex flex-col gap-4">
 
-      {/* Topics list – Step1 design */}
-      <div className="bg-[#F1F1F1] rounded-xl px-4 pt-6 pb-6 max-h-[420px] overflow-y-auto">
+        {/* Blue course banner (Figma values) */}
+        <div
+          className="
+            w-full
+            rounded-[12px]
+            bg-[#D1EAFD]
+            flex items-center
+            gap-[20px]
+            px-[12px]
+            py-[14px]
+            text-sm font-semibold text-slate-800
+          "
+        >
+          <span
+            className="
+              inline-flex items-center justify-center
+              rounded-[6px]
+              bg-[#E4F7E4]
+              text-[#208820]
+              text-xs font-semibold
+              px-[6px] py-[4px]
+            "
+          >
+            {code}
+          </span>
+          <span>{name}</span>
+        </div>
 
+        {/* Topics list */}
         {topics.length === 0 ? (
           <p className="text-sm text-gray-500 px-2 py-4">
-            No se recibieron temas del backend. Verifica la llamada a la API.
+            No se recibieron temas del backend.
           </p>
         ) : (
           <ul className="flex flex-col gap-4">
@@ -83,8 +104,7 @@ export function Step2Topics({
                   `}
                   onClick={() => onSelectTopic(topic)}
                 >
-
-                  {/* Checkbox — identical to Step1 */}
+                  {/* Checkbox identical to Step1 */}
                   <div
                     className={`
                       h-6 w-6 rounded-[6px] border-[1.8px]
@@ -101,11 +121,9 @@ export function Step2Topics({
                     )}
                   </div>
 
-                  {/* Topic text */}
                   <span className="text-sm text-slate-800 font-medium">
                     {topic}
                   </span>
-
                 </li>
               );
             })}
@@ -113,7 +131,7 @@ export function Step2Topics({
         )}
       </div>
 
-      {/* Continue button — same design as Step1 */}
+      {/* Continue button */}
       <div className="flex justify-end mt-2">
         <button
           type="button"

@@ -39,7 +39,6 @@ export function Step3Microcaps({
 
     return (
     <div className="flex flex-col gap-4">
-      {/* <div className="bg-zinc-400 rounded-2xl px-4 py-4 max-h-72 overflow-y-auto"> */}
       <div className="bg-[#f1f1f1] rounded-2xl px-4 py-4 max-h-72 overflow-y-auto">
 
         <div className="flex flex-col gap-3">
