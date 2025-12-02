@@ -66,40 +66,50 @@ export function FlowShell({
       <button
         onClick={() => window.close()}
         className="
-          group
-          absolute
-          top-[40px] left-[40px] z-50
-          flex items-center gap-3
+          absolute top-[40px] left-[40px] z-50
+
+          group                         /* <-- NECESARIO */
+          flex items-center
           bg-[#349A00]
-          text-white
-          rounded-[12px]
+          text-white font-semibold
+          rounded-xl
           px-4 py-2
-          shadow-md
+          shadow-lg
           transition-all duration-300
-          hover:pl-6 hover:pr-6
           active:scale-95
+
+          /* HOVER EXPANDS BUTTON */
+          hover:px-6
         "
       >
-        {/* Icon that grows on hover */}
-        <div className="transition-transform duration-300 group-hover:scale-125">
-          <CloseTab width={24} height={24} />
-        </div>
+        {/* ICONO — crece en hover */}
+        <CloseTab
+          className="
+            w-[24px] h-[24px]
+            transition-transform duration-300
+            group-hover:scale-125      /* <-- HOY SÍ FUNCIONA */
+          "
+        />
 
-        {/* Text appears smoothly on hover */}
+        {/* TEXTO — aparece suave al hover */}
         <span
           className="
-            opacity-0
-            translate-x-[-10px]
-            group-hover:opacity-100
-            group-hover:translate-x-0
-            transition-all duration-300
+            overflow-hidden
+            max-w-0
+            ml-3
             whitespace-nowrap
             font-semibold
+            opacity-0
+            transition-all duration-300
+
+            group-hover:max-w-[200px]
+            group-hover:opacity-100
           "
         >
           Volver a Zajuna
         </span>
-      </button>
+</button>  
+
 
       {/* Main Card */}
       <div
