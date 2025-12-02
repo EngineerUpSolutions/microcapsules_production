@@ -125,16 +125,17 @@ export function FlowShell({
         <p className="text-sm text-gray-600 mb-6">{description()}</p>
 
         {/* Progress bar */}
-        <div className="flex items-center gap-3 mb-8">
+        <div className="flex items-center justify-center gap-3 mb-8">
           {[1, 2, 3].map((step) => (
             <div
               key={step}
-              className={`h-2 rounded-full flex-1 transition-colors ${
+              className={`h-2 w-[160px] rounded-full transition-colors ${
                 currentStep >= step ? "bg-green-500" : "bg-gray-300"
               }`}
             />
           ))}
         </div>
+
 
         {/* Content area */}
         <div className="mb-10">{children}</div>
