@@ -23,8 +23,8 @@ export function FlowShell({
         <>
           Hola, <span className="font-semibold">{userName}</span> aquí podrás
           ver los cursos en los cuales estás enrolado y activos. Selecciona uno
-          y haz clic en <span className="font-semibold">“Continuar”</span>{" "}
-          para seguir al siguiente paso.
+          y haz clic en <span className="font-semibold">“Continuar”</span> para
+          seguir al siguiente paso.
         </>
       );
     }
@@ -32,9 +32,9 @@ export function FlowShell({
     if (currentStep === 2) {
       return (
         <>
-          <span className="font-semibold">{userName}</span> aquí podrás ver
-          los temas asociados al curso seleccionado. Elige un tema y haz clic
-          en <span className="font-semibold">“Continuar”</span> para ver las
+          <span className="font-semibold">{userName}</span> aquí podrás ver los
+          temas asociados al curso seleccionado. Elige un tema y haz clic en{" "}
+          <span className="font-semibold">“Continuar”</span> para ver las
           microcápsulas.
         </>
       );
@@ -42,9 +42,9 @@ export function FlowShell({
 
     return (
       <>
-        <span className="font-semibold">{userName}</span> aquí podrás ver
-        las microcápsulas generadas para el tema seleccionado. Copia el
-        contenido que necesites usando el botón de cada microcápsula.
+        <span className="font-semibold">{userName}</span> aquí podrás ver las
+        microcápsulas generadas para el tema seleccionado. Copia el contenido
+        que necesites usando el botón de cada microcápsula.
       </>
     );
   };
@@ -56,26 +56,52 @@ export function FlowShell({
         flex flex-col items-center
         justify-center sm:justify-start
         px-4 pb-0
-        pt-24                /* NEW: avoids overlapping with floating close button on mobile */
-        sm:pt-[49px]        /* Figma spacing for desktop */
+        pt-24
+        sm:pt-[49px]
         relative
       "
     >
 
-      {/* Floating close-tab button */}
+      {/* Floating close-tab button (Figma animated version) */}
       <button
         onClick={() => window.close()}
         className="
+          group
           absolute
-          top-[40px] left-[40px]
-          z-50
-          transition-transform active:scale-95
+          top-[40px] left-[40px] z-50
+          flex items-center gap-3
+          bg-[#349A00]
+          text-white
+          rounded-[12px]
+          px-4 py-2
+          shadow-md
+          transition-all duration-300
+          hover:pl-6 hover:pr-6
+          active:scale-95
         "
       >
-        <CloseTab />
+        {/* Icon that grows on hover */}
+        <div className="transition-transform duration-300 group-hover:scale-125">
+          <CloseTab width={24} height={24} />
+        </div>
+
+        {/* Text appears smoothly on hover */}
+        <span
+          className="
+            opacity-0
+            translate-x-[-10px]
+            group-hover:opacity-100
+            group-hover:translate-x-0
+            transition-all duration-300
+            whitespace-nowrap
+            font-semibold
+          "
+        >
+          Volver a Zajuna
+        </span>
       </button>
 
-      {/* Card */}
+      {/* Main Card */}
       <div
         className="
           w-full max-w-[720px] bg-white rounded-xl
@@ -85,9 +111,7 @@ export function FlowShell({
           relative
         "
       >
-        <h1 className="text-3xl font-bold text-sky-900 mb-2">
-          Microcápsulas
-        </h1>
+        <h1 className="text-3xl font-bold text-sky-900 mb-2">Microcápsulas</h1>
 
         <p className="text-sm text-gray-600 mb-6">{description()}</p>
 
@@ -103,7 +127,7 @@ export function FlowShell({
           ))}
         </div>
 
-        {/* Content */}
+        {/* Content area */}
         <div className="mb-10">{children}</div>
 
         {/* Back button inside card */}
@@ -122,7 +146,7 @@ export function FlowShell({
         )}
       </div>
 
-      {/* Global footer */}
+      {/* Footer */}
       <footer className="mt-10 mb-10 text-[11px] sm:text-xs text-slate-100/80">
         <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
           <span>Copyright © 2025</span>

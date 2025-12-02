@@ -12,7 +12,7 @@ export const CloseTab: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
     >
       <g filter="url(#filter0_d_153_3750)">
         {/* BACKGROUND — UPDATED TO FIGMA GREEN #349A00 */}
-        <rect x="5" y="3" width="56" height="42" rx="12" fill="#349A00" />
+        <rect x="5" y="3" width="56" height="42" rx="12" className="close-bg" />
 
         {/* ARROWS */}
         <path
