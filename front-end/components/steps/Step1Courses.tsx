@@ -14,10 +14,6 @@ type Step1CoursesProps = {
   onContinue: () => void;
   isContinuing?: boolean;
 };
-
-// Helper: split "VENTA DE PRODUCTOS EN LINEA (2977856)"
-// → name: "VENTA DE PRODUCTOS EN LINEA"
-// → code: "2977856"
 function splitNameAndCode(fullname: string): { name: string; code: string } {
   const match = fullname.match(/\((\d+)\)\s*$/);
   if (match) {
@@ -67,13 +63,6 @@ export function Step1Courses({
             const { name, code } = splitNameAndCode(course.fullname);
 
             return (
-              // <li
-              //   key={course.id}
-              //   className={`flex items-center gap-3 rounded-2xl bg-white px-4 py-3 cursor-pointer border transition-colors ${
-              //     selected ? "border-green-500" : "border-gray-200"
-              //   }`}
-              //   onClick={() => onSelectCourse(course.id)}
-              // >
               <li
                 key={course.id}
                 className={`
@@ -82,7 +71,7 @@ export function Step1Courses({
 
                   border-none
                   ${selected ? "bg-[#D0EED0]" : "bg-white"}
-                  hover:bg-[#D0EED0]"
+                  hover:bg-[#D0EED0]
                 `}
                 onClick={() => onSelectCourse(course.id)}
               >
