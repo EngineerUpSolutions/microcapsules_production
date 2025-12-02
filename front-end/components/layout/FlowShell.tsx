@@ -68,26 +68,26 @@ export function FlowShell({
         className="
           absolute top-[40px] left-[40px] z-50
 
-          group                         /* <-- NECESARIO */
+          group
           flex items-center
           bg-[#349A00]
           text-white font-semibold
           rounded-xl
-          px-4 py-2
+
+          px-3 py-2              /* compact default */
           shadow-lg
           transition-all duration-300
           active:scale-95
 
-          /* HOVER EXPANDS BUTTON */
-          hover:px-6
+          hover:px-5             /* expand on hover */
         "
       >
         {/* ICONO — crece en hover */}
         <CloseTab
           className="
-            w-[24px] h-[24px]
+            w-[32px] h-[32px]    /* bigger icon (correct visual) */
             transition-transform duration-300
-            group-hover:scale-125      /* <-- HOY SÍ FUNCIONA */
+            group-hover:scale-125
           "
         />
 
@@ -108,8 +108,7 @@ export function FlowShell({
         >
           Volver a Zajuna
         </span>
-</button>  
-
+      </button>
 
       {/* Main Card */}
       <div
@@ -159,7 +158,7 @@ export function FlowShell({
       {/* Footer */}
       <footer className="mt-10 mb-10 text-[11px] sm:text-xs text-slate-100/80">
         <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
-          <span>Copyright © 2025</span>
+          <span>COPYRIGHT © 2025</span>
           <span className="w-px h-4 bg-slate-100/50" />
           <span>LMS ZAJUNA</span>
           <span className="w-px h-4 bg-slate-100/50" />
