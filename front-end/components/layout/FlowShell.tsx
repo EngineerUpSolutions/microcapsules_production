@@ -17,16 +17,14 @@ export function FlowShell({
   showBack = false,
   onBack,
 }: FlowShellProps) {
-  // Text under the title, depends on the step
   const description = () => {
     if (currentStep === 1) {
       return (
         <>
           Hola, <span className="font-semibold">{userName}</span> aquí podrás
           ver los cursos en los cuales estás enrolado y activos. Selecciona uno
-          y haz clic en{" "}
-          <span className="font-semibold">“Continuar”</span> para seguir al
-          siguiente paso.
+          y haz clic en <span className="font-semibold">“Continuar”</span>{" "}
+          para seguir al siguiente paso.
         </>
       );
     }
@@ -34,15 +32,14 @@ export function FlowShell({
     if (currentStep === 2) {
       return (
         <>
-          <span className="font-semibold">{userName}</span> aquí podrás
-          ver los temas asociados al curso seleccionado. Elige un tema y haz
-          clic en <span className="font-semibold">“Continuar”</span> para ver
-          las microcápsulas.
+          <span className="font-semibold">{userName}</span> aquí podrás ver
+          los temas asociados al curso seleccionado. Elige un tema y haz clic
+          en <span className="font-semibold">“Continuar”</span> para ver las
+          microcápsulas.
         </>
       );
     }
 
-    // currentStep === 3
     return (
       <>
         <span className="font-semibold">{userName}</span> aquí podrás ver
@@ -52,28 +49,42 @@ export function FlowShell({
     );
   };
 
-return (
-  <div
-    className="
-      h-screen overflow-hidden
-      flex flex-col items-center
-      justify-center px-4 pt-6 pb-0
-      sm:justify-start sm:pt-[49px] sm:pb-0
-    "
-  >
+  return (
+    <div
+      className="
+        h-screen overflow-hidden
+        flex flex-col items-center
+        justify-center sm:justify-start
+        px-4 pb-0
+        pt-24                /* NEW: avoids overlapping with floating close button on mobile */
+        sm:pt-[49px]        /* Figma spacing for desktop */
+        relative
+      "
+    >
 
+      {/* Floating close-tab button */}
+      <button
+        onClick={() => window.close()}
+        className="
+          absolute
+          top-[40px] left-[40px]
+          z-50
+          transition-transform active:scale-95
+        "
+      >
+        <CloseTab />
+      </button>
 
       {/* Card */}
       <div
         className="
           w-full max-w-[720px] bg-white rounded-xl
           shadow-[0_2px_5px_0_#c1c1c1]
-          px-4 pt-6 pb-4                  /* mobile */
-          sm:px-[26px] sm:pt-8 sm:pb-[10px]  /* >= 640px: closer to Figma */
+          px-4 pt-6 pb-4
+          sm:px-[26px] sm:pt-8 sm:pb-[10px]
           relative
         "
       >
-        {/* Header */}
         <h1 className="text-3xl font-bold text-sky-900 mb-2">
           Microcápsulas
         </h1>
@@ -92,15 +103,19 @@ return (
           ))}
         </div>
 
-        {/* Content (steps) */}
+        {/* Content */}
         <div className="mb-10">{children}</div>
 
-        {/* Footer inside card (back button) */}
+        {/* Back button inside card */}
         {showBack && onBack && (
           <button
             type="button"
             onClick={onBack}
-            className="absolute left-8 bottom-8 w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center text-xl shadow-md"
+            className="
+              absolute left-8 bottom-8
+              w-10 h-10 rounded-full bg-green-500 text-white
+              flex items-center justify-center text-xl shadow-md
+            "
           >
             «
           </button>
@@ -117,10 +132,6 @@ return (
           <span>Todos los derechos reservados</span>
         </div>
       </footer>
-
-
-
-
     </div>
   );
 }
