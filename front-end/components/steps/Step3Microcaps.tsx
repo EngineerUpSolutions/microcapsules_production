@@ -3,6 +3,7 @@ import React from "react";
 import type { Course } from "./Step1Courses";
 import { MicrocapsIcon } from "../icons/MicrocapsIcon";
 import { Copy } from "../icons/Copy";
+import { pushCopyToast } from "../toasts/CopyToast";
 
 type Step3MicrocapsProps = {
   selectedCourse: Course | null;
@@ -47,6 +48,7 @@ export function Step3Microcaps({
   const handleCopyClick = async (index: number, text: string) => {
     await handleCopy(text);
     setCopiedIndex(index);
+    pushCopyToast("Copiado con éxito");
 
     // stays copied for 15 seconds (Figma requirement)
     setTimeout(() => {

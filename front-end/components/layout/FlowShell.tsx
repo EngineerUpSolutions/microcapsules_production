@@ -2,7 +2,7 @@
 import React from "react";
 import { CloseTab } from "../icons/CloseTab";
 import { BackButtonStep2Step3 } from "../icons/BackButtonStep2Step3";
-
+import { CopyToastContainer } from "../toasts/CopyToast"; 
 type FlowShellProps = {
   currentStep: 1 | 2 | 3;
   userName: string;
@@ -18,7 +18,6 @@ export function FlowShell({
   showBack = false,
   onBack,
 }: FlowShellProps) {
-
   return (
     <div
       className="
@@ -26,8 +25,7 @@ export function FlowShell({
         flex flex-col items-center
         justify-center sm:justify-start
         px-4 pb-0
-        pt-24
-        sm:pt-[49px]
+        pt-24 sm:pt-[49px]
         relative
       "
     >
@@ -37,19 +35,11 @@ export function FlowShell({
         onClick={() => window.close()}
         className="
           absolute top-[40px] left-[40px] z-50
-
-          group
-          flex items-center
-          bg-[#349A00]
-          text-white font-semibold
-          rounded-xl
-
-          px-3 py-2
-          shadow-lg
+          group flex items-center
+          bg-[#349A00] text-white font-semibold rounded-xl
+          px-3 py-2 shadow-lg
           transition-all duration-300
-          active:scale-95
-
-          hover:px-5
+          active:scale-95 hover:px-5
         "
       >
         <CloseTab
@@ -62,23 +52,16 @@ export function FlowShell({
 
         <span
           className="
-            overflow-hidden
-            max-w-0
-            ml-3
-            whitespace-nowrap
-            font-semibold
-            opacity-0
-            transition-all duration-300
-
-            group-hover:max-w-[200px]
-            group-hover:opacity-100
+            overflow-hidden max-w-0 ml-3 whitespace-nowrap
+            font-semibold opacity-0 transition-all duration-300
+            group-hover:max-w-[200px] group-hover:opacity-100
           "
         >
           Volver a Zajuna
         </span>
       </button>
 
-      {/* Main Card */}
+      {/* ------------------- MAIN CARD ------------------- */}
       <div
         className="
           w-full max-w-[720px] bg-white rounded-xl
@@ -88,23 +71,20 @@ export function FlowShell({
           relative
         "
       >
-
-        {/* ------- TITLE + DESCRIPTION (FIGMA PERFECT) ------- */}
+        {/* TITLE + DESCRIPTION */}
         <div className="w-full px-[16px] flex flex-col gap-[16px] mb-6">
 
           {/* TITLE */}
           <h1
             className="
-              font-[600]
-              text-[28px]
-              leading-[100%]
-              text-[#002C4D]
+              font-[600] text-[28px]
+              leading-[100%] text-[#002C4D]
             "
           >
             Microcápsulas
           </h1>
 
-          {/* DESCRIPTION (dynamic per step) */}
+          {/* DESCRIPTION */}
           <p className="text-[16px] leading-[100%] text-[#5A5C5E]">
             {currentStep === 1 && (
               <>
@@ -132,11 +112,9 @@ export function FlowShell({
               </>
             )}
           </p>
-
         </div>
-        {/* ------- END TITLE + DESCRIPTION ------- */}
 
-        {/* Progress bar */}
+        {/* PROGRESS BAR */}
         <div className="flex items-center justify-center gap-4 mb-8">
           {[1, 2, 3].map((step) => (
             <div
@@ -148,10 +126,10 @@ export function FlowShell({
           ))}
         </div>
 
-        {/* Content area */}
+        {/* CONTENT */}
         <div className="mb-10">{children}</div>
 
-        {/* Back button */}
+        {/* BACK BUTTON */}
         {showBack && onBack && (
           <button
             type="button"
@@ -160,21 +138,16 @@ export function FlowShell({
               absolute left-8 bottom-8
               flex items-center justify-center
               transition-transform duration-200
-              hover:scale-105 active:scale-95
-              cursor-pointer
+              hover:scale-105 active:scale-95 cursor-pointer
             "
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-            }}
+            style={{ background: "none", border: "none", padding: 0 }}
           >
             <BackButtonStep2Step3 />
           </button>
         )}
       </div>
 
-      {/* Footer */}
+      {/* ------------------- FOOTER ------------------- */}
       <footer className="mt-10 mb-10 text-[11px] sm:text-xs text-slate-100/80">
         <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
           <span>COPYRIGHT © 2025</span>
@@ -184,6 +157,9 @@ export function FlowShell({
           <span>Todos los derechos reservados</span>
         </div>
       </footer>
+
+      {/* ------------------ TOAST SYSTEM ------------------ */}
+      <CopyToastContainer />  
     </div>
   );
 }
