@@ -23,7 +23,7 @@ export function Step3Microcaps({
     );
   }
 
-  // Extract code and name using same logic as Step 1 & 2
+  // Extract code + name
   const match = selectedCourse.fullname.match(/\((\d+)\)\s*$/);
   const code = match ? match[1] : selectedCourse.id;
   const name = match
@@ -41,13 +41,13 @@ export function Step3Microcaps({
   return (
     <div className="flex flex-col gap-4">
 
-      {/* Main container (same grey as Step 1 & Step 2) */}
+      {/* Main container */}
       <div className="bg-[#F1F1F1] rounded-xl px-4 py-4 max-h-72 overflow-y-auto">
 
         <div className="flex flex-col gap-4">
 
           {/* ---------------------------------------------------------
-              COURSE BANNER — FIGMA PERFECT (same as Step 2)
+              COURSE BANNER — FIGMA PERFECT
           ------------------------------------------------------------ */}
           <div
             className="
@@ -97,9 +97,8 @@ export function Step3Microcaps({
           </div>
 
           {/* ---------------------------------------------------------
-              TOPIC BANNER (light blue, same semantic as Figma)
+              TOPIC BANNER — FIGMA
           ------------------------------------------------------------ */}
-          {/* TOPIC BANNER — FIGMA PERFECT */}
           <div
             className="
               w-full
@@ -120,9 +119,8 @@ export function Step3Microcaps({
             {selectedTopic}
           </div>
 
-
           {/* ---------------------------------------------------------
-              LISTA DE MICROCÁPSULAS
+              MICROCÁPSULAS LIST
           ------------------------------------------------------------ */}
           {microcapsules.length === 0 ? (
             <p className="text-sm text-gray-500">
@@ -131,55 +129,72 @@ export function Step3Microcaps({
           ) : (
             <ul className="flex flex-col gap-3">
               {microcapsules.map((text, idx) => (
-
-
-
                 <li
                   key={idx}
                   className="
-                    rounded-2xl bg-white
-                    px-4 py-3
-                    flex flex-col gap-2
-                    shadow-sm
+                    relative
+                    w-full
+                    rounded-[12px]
+                    bg-white
+                    px-[12px]
+                    py-[14px]
+                    flex flex-col
+                    gap-[20px]
                   "
                 >
+
                   {/* Header */}
-                  <div className="flex items-center justify-between text-sm font-semibold text-slate-800">
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-800">
-                        <MicrocapsIcon className="h-4 w-4 text-white" />
-                      </span>
-                      <span>Microcápsula #{idx + 1}</span>
-                    </div>
+                  <div className="flex items-center gap-[10px]">
+                    
+                    {/* Icon 16x16 — Figma */}
+                    <MicrocapsIcon className="w-4 h-4 text-[#696969]" />
 
-                    {/* Copy button */}
-                    <button
-                        type="button"
-                        onClick={() => handleCopy(text)}
-                        className="
-                        inline-flex items-center justify-center
-                        w-6 h-6
-                        cursor-pointer
-                        hover:scale-110
-                        transition
-                        "
-                        >
-                        <Copy className="w-6 h-6" />
-                    </button>
-
+                    {/* Title */}
+                    <span
+                      className="
+                        text-[14px]
+                        font-[500]
+                        leading-[16px]
+                        text-[#696969]
+                      "
+                    >
+                      Microcápsula #{idx + 1}
+                    </span>
                   </div>
 
-                  {/* Texto de la microcápsula */}
-                  <p className="text-sm text-slate-600 leading-relaxed">
+                  {/* Copy button — absolute top-right */}
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(text)}
+                    className="
+                      absolute
+                      top-[10px]
+                      right-[10px]
+                      inline-flex items-center justify-center
+                      w-[24px] h-[24px]
+                      bg-white
+                      rounded-[6px]
+                      hover:scale-110
+                      transition
+                    "
+                  >
+                    <Copy className="w-[24px] h-[24px]" />
+                  </button>
+
+                  {/* Microcapsule text */}
+                  <p
+                    className="
+                      text-[14px]
+                      font-[400]
+                      leading-[20px]
+                      text-[#5A5C5E]
+                      text-justify
+                    "
+                  >
                     {text}
                   </p>
+
                 </li>
-
-
-
-
-
-
               ))}
             </ul>
           )}
