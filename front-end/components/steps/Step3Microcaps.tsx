@@ -157,16 +157,17 @@ export function Step3Microcaps({
                       hover:scale-110 transition
                     "
                   >
-                    <Copy
-                      className={`
-                        w-[24px] h-[24px] transition
-                        ${
-                          copiedIndex === idx
-                            ? "text-green-600"  /* FIGMA copied state */
-                            : "text-[#696969]"
-                        }
-                      `}
-                    />
+                  <Copy
+                    className={`
+                      w-[24px] h-[24px] transition
+                      ${
+                        copiedIndex === idx
+                          ? "text-green-600"   // ← verde 15 segundos
+                          : "text-gray-600"    // ← gris normal figma-like
+                      }
+                    `}
+                  />
+
                   </button>
 
                   {/* TEXT */}
