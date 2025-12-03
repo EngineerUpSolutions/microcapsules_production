@@ -129,72 +129,79 @@ export function Step3Microcaps({
           ) : (
             <ul className="flex flex-col gap-3">
               {microcapsules.map((text, idx) => (
-                <li
+                
+
+
+
+                  <li
                   key={idx}
                   className="
-                    relative
-                    w-full
-                    rounded-[12px]
-                    bg-white
-                    px-[12px]
-                    py-[14px]
-                    flex flex-col
-                    gap-[20px]
+                  relative
+                  w-full
+                  rounded-[12px]
+                  bg-white
+                  px-[37px]    /* AUMENTADO PARA RESPETAR FIGMA */
+                  py-[14px]
+                  flex flex-col
+                  gap-[12px]
                   "
-                >
-
+                  >
                   {/* Header */}
                   <div className="flex items-center gap-[10px]">
-                    
-                    {/* Icon 16x16 — Figma */}
-                    <MicrocapsIcon className="w-4 h-4 text-[#696969]" />
+                  <MicrocapsIcon className="w-4 h-4 text-[#696969]" />
 
-                    {/* Title */}
-                    <span
-                      className="
-                        text-[14px]
-                        font-[500]
-                        leading-[16px]
-                        text-[#696969]
-                      "
-                    >
-                      Microcápsula #{idx + 1}
-                    </span>
+                  <span
+                  className="
+                  text-[14px]
+                  font-[500]
+                  leading-[16px]
+                  text-[#696969]
+                  "
+                  >
+                  Microcápsula #{idx + 1}
+                  </span>
                   </div>
 
-                  {/* Copy button — absolute top-right */}
+                  {/* Copy button */}
                   <button
-                    type="button"
-                    onClick={() => handleCopy(text)}
-                    className="
-                      absolute
-                      top-[10px]
-                      right-[10px]
-                      inline-flex items-center justify-center
-                      w-[24px] h-[24px]
-                      bg-white
-                      rounded-[6px]
-                      hover:scale-110
-                      transition
-                    "
+                  type="button"
+                  onClick={() => handleCopy(text)}
+                  className="
+                  absolute
+                  top-[10px]
+                  right-[10px]
+                  inline-flex items-center justify-center
+                  w-[24px] h-[24px]
+                  bg-white
+                  rounded-[6px]
+                  hover:scale-110
+                  transition
+                  "
                   >
-                    <Copy className="w-[24px] h-[24px]" />
+                  <Copy className="w-[24px] h-[24px]" />
                   </button>
 
-                  {/* Microcapsule text */}
+                  {/* Texto */}
                   <p
-                    className="
-                      text-[14px]
-                      font-[400]
-                      leading-[20px]
-                      text-[#5A5C5E]
-                      text-justify
-                    "
+                  className="
+                  text-[14px]
+                  font-[400]
+                  leading-[20px]
+                  text-[#5A5C5E]
+                  text-justify
+                  pr-[10px]   /* EVITA QUE EL TEXTO CHOQUE CON EL ICONO */
+                  "
                   >
-                    {text}
+                  {text}
                   </p>
+                  </li>
 
-                </li>
+
+
+
+
+
+
               ))}
             </ul>
           )}
