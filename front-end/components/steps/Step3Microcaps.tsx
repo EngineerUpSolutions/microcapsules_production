@@ -54,7 +54,22 @@ export function Step3Microcaps({
   return (
     <div className="flex flex-col gap-4">
       {/* MAIN WRAPPER WITH SCROLL */}
-      <div className="bg-[#F1F1F1] rounded-xl px-4 py-4 max-h-72 overflow-y-auto">
+      <div
+        className="
+          bg-[#F1F1F1]
+          rounded-xl
+          px-4
+          py-4
+          overflow-y-auto
+
+          /* Responsive max-height */
+          max-h-[calc(100vh-320px)]
+          sm:max-h-[calc(100vh-300px)]
+          md:max-h-[calc(100vh-280px)]
+          lg:max-h-[calc(100vh-260px)]
+        "
+      >
+
         <div className="flex flex-col gap-4">
           
           {/* COURSE BANNER */}
