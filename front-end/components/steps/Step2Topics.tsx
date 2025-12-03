@@ -40,14 +40,27 @@ export function Step2Topics({
 
       {/* Header */}
       <div>
-        <h2 className="flex items-center gap-2 text-base font-semibold text-sky-900">
+
+          <h2 className="
+            flex items-center gap-2
+            text-[20px] leading-[24px] 
+            font-[500] tracking-[-0.5px]
+            text-[#002C4D]
+          ">
+
           <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-100">
             <TopicsIcon className="h-5 w-5" />
           </span>
           <span>Temas</span>
         </h2>
 
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="
+          mt-1 
+          text-[14px] leading-[16px] 
+          font-[400]
+          text-[#5A5C5E]
+        ">
+            
           Selecciona un tema y da click en continuar.
         </p>
       </div>
@@ -122,13 +135,18 @@ export function Step2Topics({
                 <li
                   key={idx}
                   className={`
-                    flex items-center gap-3 rounded-2xl px-4 py-3 cursor-pointer
+                    flex items-center
+                    gap-[20px]
+                    rounded-[12px]
+                    px-[12px] py-[14px]
+                    cursor-pointer
                     transition-colors border-none
                     ${selected ? "bg-[#D0EED0]" : "bg-white"}
                     hover:bg-[#D0EED0]
                   `}
                   onClick={() => onSelectTopic(topic)}
                 >
+
                   {/* Checkbox identical to Step1 */}
                   <div
                     className={`
@@ -146,9 +164,18 @@ export function Step2Topics({
                     )}
                   </div>
 
-                  <span className="text-sm text-slate-800 font-medium">
-                    {topic}
-                  </span>
+                <span
+                  className="
+                    text-[18px]
+                    font-[500]
+                    leading-[16px]
+                    text-[#5A5C5E]
+                    uppercase
+                  "
+                >
+                  {topic}
+                </span>
+
                 </li>
               );
             })}
