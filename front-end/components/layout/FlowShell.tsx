@@ -11,8 +11,9 @@ type FlowShellProps = {
   children: React.ReactNode;
   showBack?: boolean;
   onBack?: () => void;
-  onContinue?: () => void; // NEW
-  onFinish?: () => void;   // NEW
+  onContinue?: () => void;
+  onFinish?: () => void;
+  canContinue?: boolean; // 🔥 NEW: Step1 y Step2 pueden activar/desactivar el botón
 };
 
 export function FlowShell({
@@ -23,6 +24,7 @@ export function FlowShell({
   onBack,
   onContinue,
   onFinish,
+  canContinue = true, // default
 }: FlowShellProps) {
   return (
     <div
@@ -67,9 +69,7 @@ export function FlowShell({
         className="
           w-full max-w-[720px] bg-white rounded-xl
           shadow-[0_2px_5px_0_#c1c1c1]
-          flex flex-col
-          flex-1
-          relative
+          flex flex-col flex-1 relative
         "
       >
         {/* TITLE + DESCRIPTION */}
@@ -82,25 +82,19 @@ export function FlowShell({
             {currentStep === 1 && (
               <>
                 Hola, <span className="font-[600]">{userName}</span> aquí podrás ver
-                los cursos en los cuales estás enrolado y activos. Selecciona uno y haz
-                clic en <span className="font-[600]">“Continuar”</span> para seguir al
-                siguiente paso.
+                los cursos en los cuales estás enrolado y activos.
               </>
             )}
 
             {currentStep === 2 && (
               <>
-                <span className="font-[600]">{userName}</span> aquí podrás ver los
-                temas asociados al curso seleccionado. Elige un tema y haz clic en{" "}
-                <span className="font-[600]">“Continuar”</span>.
+                <span className="font-[600]">{userName}</span>, selecciona un tema del curso.
               </>
             )}
 
             {currentStep === 3 && (
               <>
-                <span className="font-[600]">{userName}</span> aquí podrás ver las
-                microcápsulas generadas. Copia el contenido que necesites usando el
-                botón de cada microcápsula.
+                <span className="font-[600]">{userName}</span> aquí podrás ver las microcápsulas generadas.
               </>
             )}
           </p>
@@ -118,19 +112,14 @@ export function FlowShell({
           ))}
         </div>
 
-        {/* SCROLLABLE CONTENT */}
-        <div className="flex-1 overflow-y-auto px-4 pb-24">
-          {children}
-        </div>
+        {/* CONTENT AREA SCROLLABLE */}
+        <div className="flex-1 overflow-y-auto px-4 pb-24">{children}</div>
 
-        {/* ----- BOTTOM BUTTON BAR (Figma aligned) ----- */}
+        {/* ----- FIXED BOTTOM BUTTON BAR ----- */}
         <div
           className="
-            w-full h-[70px]
-            flex items-center justify-between
-            px-6
-            absolute bottom-0 left-0
-            bg-white
+            w-full h-[70px] flex items-center justify-between
+            px-6 absolute bottom-0 left-0 bg-white
           "
         >
           {/* BACK BUTTON (only steps 2 & 3) */}
@@ -139,39 +128,29 @@ export function FlowShell({
               <BackButtonStep2Step3 />
             </button>
           ) : (
-            <div /> // Keeps spacing consistent
+            <div />
           )}
 
-          {/* RIGHT BUTTON: Continuar or Finalizar */}
-          {currentStep === 1 && onContinue && (
+          {/* RIGHT BUTTON: CONTINUAR OR FINALIZAR */}
+          {(currentStep === 1 || currentStep === 2) && (
             <button
-              onClick={onContinue}
-              className="
-                bg-[#349A00] text-white font-semibold
-                px-6 py-2 rounded-xl shadow
-                active:scale-95 transition
-              "
+              onClick={canContinue ? onContinue : undefined}
+              disabled={!canContinue}
+              className={`
+                px-6 py-2 rounded-xl shadow font-semibold transition-all
+                ${
+                  canContinue
+                    ? "bg-[#349A00] text-white active:scale-95"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                }
+              `}
             >
               Continuar
             </button>
           )}
 
-          {currentStep === 2 && onContinue && (
-            <button
-              onClick={onContinue}
-              className="
-                bg-[#349A00] text-white font-semibold
-                px-6 py-2 rounded-xl shadow
-                active:scale-95 transition
-              "
-            >
-              Continuar
-            </button>
-          )}
-
-          {currentStep === 3 && onFinish && (
-            <FinalizarButton onClick={onFinish} />
-          )}
+          {/* FINALIZAR ON STEP 3 */}
+          {currentStep === 3 && onFinish && <FinalizarButton onClick={onFinish} />}
         </div>
       </div>
 

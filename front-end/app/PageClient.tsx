@@ -118,6 +118,7 @@ export default function PageClient() {
         5
       );
 
+      // ✅ FIX: spelling corrected
       setMicrocapsules(data.microcapsulas || []);
       setStep(3);
     } catch {
@@ -135,6 +136,15 @@ export default function PageClient() {
     window.close();
   };
 
+  // ------------------ NEW: CAN CONTINUE LOGIC ----------------------
+
+  const canContinue =
+    step === 1
+      ? selectedCourseId !== null
+      : step === 2
+      ? selectedTopic !== null
+      : true;
+
   // --------------------------- RENDER -----------------------------
 
   return (
@@ -151,6 +161,7 @@ export default function PageClient() {
           : undefined
       }
       onFinish={step === 3 ? finishProcess : undefined}
+      canContinue={canContinue}
     >
       {/* MODALS FOR ERRORS */}
       {errorMessage && (
