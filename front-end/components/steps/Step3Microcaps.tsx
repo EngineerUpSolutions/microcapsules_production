@@ -5,6 +5,7 @@ import { MicrocapsIcon } from "../icons/MicrocapsIcon";
 import { Copy } from "../icons/Copy";
 import { pushCopyToast } from "../toasts/CopyToast";
 
+
 type Step3MicrocapsProps = {
   selectedCourse: Course | null;
   selectedTopic: string | null;
@@ -187,7 +188,12 @@ export function Step3Microcaps({
 
             </ul>
           )}
+
+
+
         </div>
+
+
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import React from "react";
 import { CloseTab } from "../icons/CloseTab";
 import { BackButtonStep2Step3 } from "../icons/BackButtonStep2Step3";
 import { CopyToastContainer } from "../toasts/CopyToast"; 
+import { FinalizarButton } from "../icons/FinalizarButton";
 type FlowShellProps = {
   currentStep: 1 | 2 | 3;
   userName: string;
@@ -130,6 +131,9 @@ export function FlowShell({
         <div className="mb-10">{children}</div>
 
         {/* BACK BUTTON */}
+
+
+        
         {showBack && onBack && (
           <button
             type="button"
@@ -144,6 +148,10 @@ export function FlowShell({
           >
             <BackButtonStep2Step3 />
           </button>
+
+
+
+
         )}
       </div>
 
