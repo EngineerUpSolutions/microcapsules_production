@@ -124,59 +124,6 @@ export function Step1Courses({
         </ul>
       </div>
 
-      {/* Continue button */}
-      <div className="flex justify-end mt-2">
-        <button
-          type="button"
-          disabled={!hasSelection || isContinuing}
-          onClick={onContinue}
-          className={`
-            flex items-center justify-center
-            px-4 py-[10px]
-            rounded-[12px]
-            text-sm font-medium
-            transition-all
-            gap-2
-            shadow-sm
-            ${!hasSelection || isContinuing
-              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-              : "bg-[#349A00] text-white hover:bg-[#2E8F00]"}
-          `}
-        >
-          {isContinuing ? (
-            <>
-              {/* Spinner */}
-              <svg
-                className="animate-spin h-4 w-4 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16 8 8 0 01-8-8z"
-                ></path>
-              </svg>
-
-              <span>Cargando temas</span>
-            </>
-          ) : (
-            "Continuar"
-          )}
-        </button>
-      </div>
-
-
-
 
 
 

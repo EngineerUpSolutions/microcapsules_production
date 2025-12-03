@@ -155,28 +155,6 @@ export function Step2Topics({
           </ul>
         )}
       </div>
-
-      {/* Continue button */}
-      <div className="flex justify-end mt-2">
-        <button
-          type="button"
-          disabled={!selectedTopic || isContinuing}
-          onClick={onContinue}
-          className={`
-            flex items-center justify-center
-            px-4 py-[10px]
-            rounded-[12px]
-            text-sm font-medium transition-all gap-2 shadow-sm
-            ${
-              !selectedTopic || isContinuing
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-[#349A00] text-white hover:bg-[#2E8F00]"
-            }
-          `}
-        >
-          {isContinuing ? "Cargando microcápsulas..." : "Continuar"}
-        </button>
-      </div>
     </div>
   );
 }
