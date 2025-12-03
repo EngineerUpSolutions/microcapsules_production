@@ -18,37 +18,6 @@ export function FlowShell({
   showBack = false,
   onBack,
 }: FlowShellProps) {
-  const description = () => {
-    if (currentStep === 1) {
-      return (
-        <>
-          Hola, <span className="font-semibold">{userName}</span> aquí podrás
-          ver los cursos en los cuales estás enrolado y activos. Selecciona uno
-          y haz clic en <span className="font-semibold">“Continuar”</span> para
-          seguir al siguiente paso.
-        </>
-      );
-    }
-
-    if (currentStep === 2) {
-      return (
-        <>
-          <span className="font-semibold">{userName}</span> aquí podrás ver los
-          temas asociados al curso seleccionado. Elige un tema y haz clic en{" "}
-          <span className="font-semibold">“Continuar”</span> para ver las
-          microcápsulas.
-        </>
-      );
-    }
-
-    return (
-      <>
-        <span className="font-semibold">{userName}</span> aquí podrás ver las
-        microcápsulas generadas para el tema seleccionado. Copia el contenido
-        que necesites usando el botón de cada microcápsula.
-      </>
-    );
-  };
 
   return (
     <div
@@ -63,7 +32,7 @@ export function FlowShell({
       "
     >
 
-      {/* Floating close-tab button (Figma animated version) */}
+      {/* Floating close-tab button */}
       <button
         onClick={() => window.close()}
         className="
@@ -75,24 +44,22 @@ export function FlowShell({
           text-white font-semibold
           rounded-xl
 
-          px-3 py-2              /* compact default */
+          px-3 py-2
           shadow-lg
           transition-all duration-300
           active:scale-95
 
-          hover:px-5             /* expand on hover */
+          hover:px-5
         "
       >
-        {/* ICONO — crece en hover */}
         <CloseTab
           className="
-            w-[32px] h-[32px]    /* bigger icon (correct visual) */
+            w-[32px] h-[32px]
             transition-transform duration-300
             group-hover:scale-125
           "
         />
 
-        {/* TEXTO — aparece suave al hover */}
         <span
           className="
             overflow-hidden
@@ -121,9 +88,53 @@ export function FlowShell({
           relative
         "
       >
-        <h1 className="text-3xl font-bold text-sky-900 mb-2">Microcápsulas</h1>
 
-        <p className="text-sm text-gray-600 mb-6">{description()}</p>
+        {/* ------- TITLE + DESCRIPTION (FIGMA PERFECT) ------- */}
+        <div className="w-full px-[16px] flex flex-col gap-[16px] mb-6">
+
+          {/* TITLE */}
+          <h1
+            className="
+              font-[600]
+              text-[28px]
+              leading-[100%]
+              text-[#002C4D]
+            "
+          >
+            Microcápsulas
+          </h1>
+
+          {/* DESCRIPTION (dynamic per step) */}
+          <p className="text-[16px] leading-[100%] text-[#5A5C5E]">
+            {currentStep === 1 && (
+              <>
+                Hola, <span className="font-[600]">{userName}</span> aquí podrás ver
+                los cursos en los cuales estás enrolado y activos. Selecciona uno y haz
+                clic en <span className="font-[600]">“Continuar”</span> para seguir al
+                siguiente paso.
+              </>
+            )}
+
+            {currentStep === 2 && (
+              <>
+                <span className="font-[600]">{userName}</span> aquí podrás ver los
+                temas asociados al curso seleccionado. Elige un tema y haz clic en{" "}
+                <span className="font-[600]">“Continuar”</span> para ver las
+                microcápsulas.
+              </>
+            )}
+
+            {currentStep === 3 && (
+              <>
+                <span className="font-[600]">{userName}</span> aquí podrás ver las
+                microcápsulas generadas para el tema seleccionado. Copia el contenido
+                que necesites usando el botón de cada microcápsula.
+              </>
+            )}
+          </p>
+
+        </div>
+        {/* ------- END TITLE + DESCRIPTION ------- */}
 
         {/* Progress bar */}
         <div className="flex items-center justify-center gap-4 mb-8">
@@ -137,12 +148,10 @@ export function FlowShell({
           ))}
         </div>
 
-
-
         {/* Content area */}
         <div className="mb-10">{children}</div>
 
-        {/* Back button inside card */}
+        {/* Back button */}
         {showBack && onBack && (
           <button
             type="button"
@@ -155,9 +164,9 @@ export function FlowShell({
               cursor-pointer
             "
             style={{
-              background: 'none',
-              border: 'none',
-              padding: 0
+              background: "none",
+              border: "none",
+              padding: 0,
             }}
           >
             <BackButtonStep2Step3 />

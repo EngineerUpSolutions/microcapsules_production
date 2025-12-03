@@ -56,32 +56,57 @@ export function Step2Topics({
       <div className="bg-[#F1F1F1] rounded-xl px-4 pt-6 pb-6 max-h-[420px] overflow-y-auto flex flex-col gap-4">
 
         {/* Blue course banner (Figma values) */}
+        {/* Blue course banner — EXACT FIGMA DESIGN */}
         <div
           className="
             w-full
+            h-[60px]
             rounded-[12px]
             bg-[#D1EAFD]
-            flex items-center
-            gap-[20px]
             px-[12px]
             py-[14px]
-            text-sm font-semibold text-slate-800
+            flex items-center
+            gap-[20px]
           "
         >
+          {/* Code pill */}
           <span
             className="
-              inline-flex items-center justify-center
+              flex items-center justify-center
+              h-[32px]
+              min-w-[86px]
               rounded-[6px]
-              bg-[#E4F7E4]
-              text-[#208820]
-              text-xs font-semibold
+              bg-[#EEF7FF]
               px-[6px] py-[4px]
+
+              font-[600]
+              text-[18px]
+              leading-[24px]
+              tracking-[-0.5px]
+              text-[#2B506B]
             "
           >
             {code}
           </span>
-          <span>{name}</span>
+
+          {/* Course name */}
+          <span
+            className="
+              flex items-center
+              h-[32px]
+
+              font-[500]
+              text-[18px]
+              leading-[16px]
+              uppercase
+              text-[#2B506B]
+            "
+          >
+            {name}
+          </span>
         </div>
+
+        
 
         {/* Topics list */}
         {topics.length === 0 ? (

@@ -2,6 +2,7 @@
 import React from "react";
 import type { Course } from "./Step1Courses";
 import { MicrocapsIcon } from "../icons/MicrocapsIcon";
+
 type Step3MicrocapsProps = {
   selectedCourse: Course | null;
   selectedTopic: string | null;
@@ -21,7 +22,7 @@ export function Step3Microcaps({
     );
   }
 
-  // Same logic you use in Step1/Step2 to get code + name
+  // Extract code and name using same logic as Step 1 & 2
   const match = selectedCourse.fullname.match(/\((\d+)\)\s*$/);
   const code = match ? match[1] : selectedCourse.id;
   const name = match
@@ -31,33 +32,96 @@ export function Step3Microcaps({
   const handleCopy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      // In the future we can add a toast here
     } catch (err) {
       console.error("Error al copiar la microcápsula:", err);
     }
   };
 
-    return (
+  return (
     <div className="flex flex-col gap-4">
-      <div className="bg-[#f1f1f1] rounded-2xl px-4 py-4 max-h-72 overflow-y-auto">
 
-        <div className="flex flex-col gap-3">
-          {/* Banner curso */}
-          <div className="rounded-2xl bg-[#e1f0ff] px-4 py-3 text-sm font-semibold text-slate-800 flex items-center gap-3">
-            <span className="inline-flex items-center justify-center rounded-md bg-green-100 text-green-700 text-xs font-semibold px-3 py-1">
+      {/* Main container (same grey as Step 1 & Step 2) */}
+      <div className="bg-[#F1F1F1] rounded-xl px-4 py-4 max-h-72 overflow-y-auto">
+
+        <div className="flex flex-col gap-4">
+
+          {/* ---------------------------------------------------------
+              COURSE BANNER — FIGMA PERFECT (same as Step 2)
+          ------------------------------------------------------------ */}
+          <div
+            className="
+              w-full
+              h-[60px]
+              rounded-[12px]
+              bg-[#D1EAFD]
+              px-[12px]
+              py-[14px]
+              flex items-center
+              gap-[20px]
+            "
+          >
+            {/* Code pill */}
+            <span
+              className="
+                h-[32px]
+                min-w-[86px]
+                rounded-[6px]
+                bg-[#EEF7FF]
+                text-[#2B506B]
+                text-[18px]
+                font-[600]
+                leading-[24px]
+                tracking-[-0.5px]
+                flex items-center justify-center
+                px-[6px] py-[4px]
+              "
+            >
               {code}
             </span>
-            <span>{name}</span>
+
+            {/* Course name */}
+            <span
+              className="
+                h-[32px]
+                flex items-center
+                text-[18px]
+                font-[500]
+                uppercase
+                leading-[16px]
+                text-[#2B506B]
+              "
+            >
+              {name}
+            </span>
           </div>
 
-          {/* Banner tema seleccionado */}
-          <div className="rounded-2xl bg-[#c7ddff] px-4 py-3 text-sm font-semibold text-slate-800">
+          {/* ---------------------------------------------------------
+              TOPIC BANNER (light blue, same semantic as Figma)
+          ------------------------------------------------------------ */}
+          <div
+            className="
+              w-full
+              h-[60px]
+              rounded-[12px]
+              bg-[#C7DDFF]
+              px-[12px]
+              py-[14px]
+              flex items-center
+              text-[18px]
+              font-[500]
+              uppercase
+              leading-[16px]
+              text-[#2B506B]
+            "
+          >
             {selectedTopic}
           </div>
 
-          {/* Lista de microcápsulas */}
+          {/* ---------------------------------------------------------
+              LISTA DE MICROCÁPSULAS
+          ------------------------------------------------------------ */}
           {microcapsules.length === 0 ? (
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-500">
               Aún no se han generado microcápsulas.
             </p>
           ) : (
@@ -65,25 +129,36 @@ export function Step3Microcaps({
               {microcapsules.map((text, idx) => (
                 <li
                   key={idx}
-                  className="rounded-2xl bg-white px-4 py-3 flex flex-col gap-2 shadow-sm"
+                  className="
+                    rounded-2xl bg-white
+                    px-4 py-3
+                    flex flex-col gap-2
+                    shadow-sm
+                  "
                 >
-                  {/* Header microcápsula */}
+                  {/* Header */}
                   <div className="flex items-center justify-between text-sm font-semibold text-slate-800">
                     <div className="flex items-center gap-2">
                       <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-800">
-                        <MicrocapsIcon className="h-4 w-4" />
+                        <MicrocapsIcon className="h-4 w-4 text-white" />
                       </span>
                       <span>Microcápsula #{idx + 1}</span>
                     </div>
 
+                    {/* Copy button */}
                     <button
                       type="button"
                       onClick={() => handleCopy(text)}
-                      className="inline-flex items-center justify-center rounded-md border border-slate-300 px-2 py-1 text-xs text-slate-600 hover:bg-slate-100"
+                      className="
+                        inline-flex items-center justify-center
+                        rounded-md border border-slate-300
+                        px-2 py-1 text-xs text-slate-600
+                        hover:bg-slate-100
+                      "
                     >
                       Copiar
                     </button>
-                    </div>
+                  </div>
 
                   {/* Texto de la microcápsula */}
                   <p className="text-sm text-slate-600 leading-relaxed">
@@ -97,5 +172,4 @@ export function Step3Microcaps({
       </div>
     </div>
   );
-
 }
