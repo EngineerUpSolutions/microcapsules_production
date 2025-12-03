@@ -2,6 +2,7 @@
 import React from "react";
 import type { Course } from "./Step1Courses";
 import { MicrocapsIcon } from "../icons/MicrocapsIcon";
+import { Copy } from "../icons/Copy";
 
 type Step3MicrocapsProps = {
   selectedCourse: Course | null;
@@ -98,15 +99,17 @@ export function Step3Microcaps({
           {/* ---------------------------------------------------------
               TOPIC BANNER (light blue, same semantic as Figma)
           ------------------------------------------------------------ */}
+          {/* TOPIC BANNER — FIGMA PERFECT */}
           <div
             className="
               w-full
-              h-[60px]
+              h-[52px]
               rounded-[12px]
-              bg-[#C7DDFF]
+              bg-[#D1EAFD]
               px-[12px]
               py-[14px]
               flex items-center
+              gap-[20px]
               text-[18px]
               font-[500]
               uppercase
@@ -116,6 +119,7 @@ export function Step3Microcaps({
           >
             {selectedTopic}
           </div>
+
 
           {/* ---------------------------------------------------------
               LISTA DE MICROCÁPSULAS
@@ -127,6 +131,9 @@ export function Step3Microcaps({
           ) : (
             <ul className="flex flex-col gap-3">
               {microcapsules.map((text, idx) => (
+
+
+
                 <li
                   key={idx}
                   className="
@@ -147,17 +154,19 @@ export function Step3Microcaps({
 
                     {/* Copy button */}
                     <button
-                      type="button"
-                      onClick={() => handleCopy(text)}
-                      className="
+                        type="button"
+                        onClick={() => handleCopy(text)}
+                        className="
                         inline-flex items-center justify-center
-                        rounded-md border border-slate-300
-                        px-2 py-1 text-xs text-slate-600
-                        hover:bg-slate-100
-                      "
-                    >
-                      Copiar
+                        w-6 h-6
+                        cursor-pointer
+                        hover:scale-110
+                        transition
+                        "
+                        >
+                        <Copy className="w-6 h-6" />
                     </button>
+
                   </div>
 
                   {/* Texto de la microcápsula */}
@@ -165,6 +174,12 @@ export function Step3Microcaps({
                     {text}
                   </p>
                 </li>
+
+
+
+
+
+
               ))}
             </ul>
           )}
