@@ -1,2 +1,0 @@
-2025/12/02 10:55:32 Topics API call error: Post "http://10.217.78.128:8000/api/v1/temas/generar": dial tcp 10.217.78.128:8000: i/o timeout
-2025/12/02 10:55:38 Topics API call error: Post "http://10.217.78.128:8000/api/v1/temas/generar": read tcp 172.20.0.2:37942->10.217.78.128:8000: read: connection reset by peer
