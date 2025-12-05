@@ -4,13 +4,12 @@ import (
 	"bytes"
 	"io"
 	"net/http"
-
+    "os"
 	"microcapsules-backend/internal/utils"
 )
 
 func CallMicrocapsulesAPI(jsonBody []byte) (*http.Response, error) {
-	url := "http://10.217.78.136:8000/api/v1/microcapsulas/generar"
-
+	url := os.Getenv("MICROCAPS_API_URL")
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBody))
 	if err != nil {
 		utils.Logger.Printf("ERROR creating microcapsules request: %v", err)
