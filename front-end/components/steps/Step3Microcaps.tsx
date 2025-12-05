@@ -61,12 +61,7 @@ export function Step3Microcaps({
           px-4
           py-4
           overflow-y-auto
-
-          /* Responsive max-height */
-          max-h-[calc(100vh-320px)]
-          sm:max-h-[calc(100vh-300px)]
-          md:max-h-[calc(100vh-280px)]
-          lg:max-h-[calc(100vh-260px)]
+          max-h-[420px]
         "
       >
 
