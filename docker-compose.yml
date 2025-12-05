@@ -6,6 +6,9 @@ services:
     image: microcapsules-backend
     volumes:
       - ./back-end/logs:/app/logs
+    environment:
+      TOPICS_API_URL: "http://10.217.78.136:8000/api/v1/temas/generar"
+      MICROCAPS_API_URL: "http://10.217.78.136:8000/api/v1/microcapsulas/generar"
     ports:
       - "127.0.0.1:8080:8080"
     restart: unless-stopped

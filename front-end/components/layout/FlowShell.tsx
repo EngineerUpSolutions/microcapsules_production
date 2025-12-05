@@ -70,8 +70,10 @@ export function FlowShell({
           w-full max-w-[720px] bg-white rounded-xl
           shadow-[0_2px_5px_0_#c1c1c1]
           flex flex-col flex-1 relative
+          px-8 pt-8 
         "
       >
+
         {/* TITLE + DESCRIPTION */}
         <div className="w-full px-[16px] flex flex-col gap-[16px] mt-6">
           <h1 className="font-[600] text-[28px] leading-[100%] text-[#002C4D]">
@@ -114,6 +116,7 @@ export function FlowShell({
 
         {/* CONTENT AREA SCROLLABLE */}
         <div className="flex-1 overflow-y-auto px-4 pb-24">{children}</div>
+        {/* <div className="flex-1 overflow-y-auto px-8 pb-24">{children}</div> */}
 
         {/* ----- FIXED BOTTOM BUTTON BAR ----- */}
         <div
