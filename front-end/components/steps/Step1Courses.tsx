@@ -58,14 +58,23 @@ export function Step1Courses({
       </div>
 
       {/* Courses list */}
-      <div className="bg-[#F1F1F1] rounded-xl px-4 pt-6 pb-6 max-h-[420px] overflow-y-auto">
+      <div
+        className="
+        bg-[#F1F1F1]
+        rounded-xl
+        px-4 pt-6 pb-6
+        max-h-[60vh] md:max-h-[420px]
+        overflow-y-auto
+        "
+      >
+
         {courses.length === 0 && (
           <p className="text-sm text-gray-500 px-2 py-4">
             No se encontraron cursos.
           </p>
         )}
 
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-4 pb-30">
           {courses.map((course) => {
             const selected = course.id === selectedCourseId;
             const { name, code } = splitNameAndCode(course.fullname);
