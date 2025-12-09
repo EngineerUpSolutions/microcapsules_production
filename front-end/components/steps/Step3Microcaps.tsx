@@ -54,7 +54,7 @@ export function Step3Microcaps({
   return (
     <div className="flex flex-col gap-4">
       {/* MAIN WRAPPER WITH SCROLL */}
-      <div
+      {/* <div
         className="
           bg-[#F1F1F1]
           rounded-xl
@@ -62,6 +62,21 @@ export function Step3Microcaps({
           py-4
           overflow-y-auto
           max-h-[420px]
+        "
+      > */}
+      <div
+        className="
+          bg-[#F1F1F1]
+          rounded-xl
+          px-4
+          py-4
+          overflow-y-auto
+
+          /* Responsive dynamic height */
+          max-h-[calc(100vh-330px)]
+          sm:max-h-[calc(100vh-310px)]
+          md:max-h-[calc(100vh-300px)]
+          lg:max-h-[calc(100vh-280px)]
         "
       >
 

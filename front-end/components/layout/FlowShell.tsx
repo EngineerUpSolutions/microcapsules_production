@@ -115,7 +115,9 @@ export function FlowShell({
         </div>
 
         {/* CONTENT AREA SCROLLABLE */}
-        <div className="flex-1 overflow-y-auto px-4 pb-24">{children}</div>
+        <div className="flex-1 overflow-y-auto px-4 pb-4">
+          {children}
+        </div>
         {/* <div className="flex-1 overflow-y-auto px-8 pb-24">{children}</div> */}
 
         {/* ----- FIXED BOTTOM BUTTON BAR ----- */}
