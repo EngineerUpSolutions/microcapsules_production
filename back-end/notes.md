@@ -71,3 +71,7 @@ curl -X POST http://backend:8080/proxy/topics \
 
 
 ---
+
+
+
+chmod +x helper/create_microcaps_subscriptions_table.sh
