@@ -73,10 +73,11 @@ export function Step3Microcaps({
           overflow-y-auto
 
           /* Responsive dynamic height */
-          max-h-[calc(100vh-330px)]
-          sm:max-h-[calc(100vh-310px)]
+          max-h-[calc(100vh-350px)]
+          sm:max-h-[calc(100vh-330px)]
           md:max-h-[calc(100vh-300px)]
           lg:max-h-[calc(100vh-280px)]
+
         "
       >
 

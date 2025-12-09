@@ -29,7 +29,7 @@ export function FlowShell({
   return (
     <div
       className="
-        h-screen flex flex-col items-center
+        min-h-screen flex flex-col items-center
         px-4 pt-24 sm:pt-[49px]
         relative
       "
@@ -70,7 +70,7 @@ export function FlowShell({
           w-full max-w-[720px] bg-white rounded-xl
           shadow-[0_2px_5px_0_#c1c1c1]
           flex flex-col flex-1 relative
-          px-8 pt-8 
+          px-4 sm:px-8 pt-8
         "
       >
 
