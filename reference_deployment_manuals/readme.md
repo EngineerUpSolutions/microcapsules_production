@@ -67,3 +67,6 @@ sena@pop-os:~/Documents/microcapsules/back-end/services$
 
 
 check the ip for the external api 
+
+
+6

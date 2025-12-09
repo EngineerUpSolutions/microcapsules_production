@@ -13,6 +13,10 @@ type Step1CoursesProps = {
   onSelectCourse: (courseId: string) => void;
   onContinue: () => void;
   isContinuing?: boolean;
+  //map of courseId -> explicitly subscribed (true/false)
+  subscriptions: Record<string, boolean>;
+  //toggle handler coming from PageClient
+  onToggleSubscription: (courseId: string) => void;
 };
 function splitNameAndCode(fullname: string): { name: string; code: string } {
   const match = fullname.match(/\((\d+)\)\s*$/);
@@ -31,7 +35,10 @@ export function Step1Courses({
   onSelectCourse,
   onContinue,
   isContinuing = false,
+  subscriptions,
+  onToggleSubscription,
 }: Step1CoursesProps) {
+
   const hasSelection = selectedCourseId !== null;
 
   return (
@@ -62,7 +69,8 @@ export function Step1Courses({
           {courses.map((course) => {
             const selected = course.id === selectedCourseId;
             const { name, code } = splitNameAndCode(course.fullname);
-
+            const effectiveSubscribed =
+            subscriptions[course.id] ?? true; // default: true if no record
             return (
               <li
                 key={course.id}
@@ -133,6 +141,35 @@ export function Step1Courses({
                     {name}
                   </span>
                 </div>
+
+                {/* Subscription pill */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation(); // don't change selected course when toggling
+                    onToggleSubscription(course.id);
+                  }}
+                  className={`
+                    ml-4
+                    px-3 py-1
+                    rounded-full
+                    text-xs
+                    font-semibold
+                    border
+                    ${
+                      effectiveSubscribed
+                        ? "bg-[#E6F4EA] text-[#1E7A1E] border-[#B5E0C2]"
+                        : "bg-[#F3F4F6] text-[#4B5563] border-[#D1D5DB]"
+                    }
+                  `}
+                >
+                  {effectiveSubscribed ? "Suscrito" : "No suscrito"}
+                </button>
+
+
+
+
+
               </li>
             );
           })}

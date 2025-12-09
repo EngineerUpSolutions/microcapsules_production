@@ -65,3 +65,55 @@ export async function generateMicrocapsules(
   // backend returns: { data: { tema, microcapsulas: string[] }, meta: ... }
   return json.data; // { tema, microcapsulas }
 }
+// ----------------- Microcápsulas – distribución por curso -----------------
+
+export type SubscriptionRecord = {
+  courseId: number;
+  subscribed: boolean;
+};
+
+/**
+ * Gets all explicit subscription records for a user.
+ * IMPORTANT:
+ * - If a course is NOT present in this list, the UI must treat it as
+ *   "subscribed" by default.
+ */
+export async function fetchSubscriptions(userId: string): Promise<SubscriptionRecord[]> {
+  const response = await fetch(`/api/subscriptions?user_id=${encodeURIComponent(userId)}`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    console.error("Error calling /api/subscriptions (GET):", response.status, text);
+    throw new Error("Failed to fetch subscriptions");
+  }
+
+  const json = await response.json();
+  return (json.subscriptions || []) as SubscriptionRecord[];
+}
+
+/**
+ * Creates or updates a subscription for a given (user, course).
+ */
+export async function updateSubscription(
+  userId: string,
+  courseId: string,
+  subscribe: boolean,
+): Promise<void> {
+  const response = await fetch("/api/subscriptions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      userId,
+      courseId,
+      subscribe,
+    }),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    console.error("Error calling /api/subscriptions (POST):", response.status, text);
+    throw new Error("Failed to update subscription");
+  }
+}
