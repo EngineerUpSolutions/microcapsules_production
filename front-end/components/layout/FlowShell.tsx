@@ -33,7 +33,7 @@ export function FlowShell({
         flex flex-col items-center
         px-4 pt-24 sm:pt-[49px]
         relative
-        overflow-hidden
+        overflow-y-auto md:overflow-hidden
       "
     >
       {/* Floating close-tab button */}
