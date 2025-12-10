@@ -13,11 +13,12 @@ type Step1CoursesProps = {
   onSelectCourse: (courseId: string) => void;
   onContinue: () => void;
   isContinuing?: boolean;
-  //map of courseId -> explicitly subscribed (true/false)
+  // map of courseId -> explicitly subscribed (true/false)
   subscriptions: Record<string, boolean>;
-  //toggle handler coming from PageClient
+  // toggle handler coming from PageClient
   onToggleSubscription: (courseId: string) => void;
 };
+
 function splitNameAndCode(fullname: string): { name: string; code: string } {
   const match = fullname.match(/\((\d+)\)\s*$/);
   if (match) {
@@ -38,7 +39,6 @@ export function Step1Courses({
   subscriptions,
   onToggleSubscription,
 }: Step1CoursesProps) {
-
   const hasSelection = selectedCourseId !== null;
 
   return (
@@ -52,7 +52,6 @@ export function Step1Courses({
           <span>Cursos inscritos</span>
         </h2>
         <p className="mt-[4px] text-[14px] leading-[16px] font-[400] text-[#5A5C5E]">
-
           Selecciona uno de tus cursos y da click en continuar.
         </p>
       </div>
@@ -71,8 +70,7 @@ export function Step1Courses({
           md:max-h-[calc(100vh-300px)]
           lg:max-h-[calc(100vh-280px)]
         "
->
-
+      >
         {courses.length === 0 && (
           <p className="text-sm text-gray-500 px-2 py-4">
             No se encontraron cursos.
@@ -84,13 +82,14 @@ export function Step1Courses({
             const selected = course.id === selectedCourseId;
             const { name, code } = splitNameAndCode(course.fullname);
             const effectiveSubscribed =
-            subscriptions[course.id] ?? true; // default: true if no record
+              subscriptions[course.id] ?? true; // default: true if no record
+
             return (
               <li
                 key={course.id}
                 className={`
-                  flex items-center
-                  gap-[20px]
+                  flex flex-wrap items-center
+                  gap-[10px]
                   rounded-[12px]
                   px-[12px] py-[14px]
                   cursor-pointer
@@ -99,34 +98,35 @@ export function Step1Courses({
                   ${selected ? "bg-[#D0EED0]" : "bg-white"}
                   hover:bg-[#D0EED0]
                 `}
-
                 onClick={() => onSelectCourse(course.id)}
               >
+                {/* LEFT: checkbox + code + name */}
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  {/* Checkbox visual */}
+                  <div
+                    className={`
+                      h-6 w-6
+                      rounded-[6px]
+                      border-[1.8px]
+                      flex items-center justify-center
+                      transition-colors
+                      ${
+                        selected
+                          ? "bg-[#00AA00] border-transparent"
+                          : "bg-white border-[#96A8B6]"
+                      }
+                    `}
+                  >
+                    {selected && (
+                      <span className="text-white text-sm font-bold leading-none">
+                        ✓
+                      </span>
+                    )}
+                  </div>
 
-
-
-                {/* Checkbox visual */}
-                <div
-                  className={`
-                    h-6 w-6
-                    rounded-[6px]
-                    border-[1.8px]
-                    flex items-center justify-center
-                    transition-colors
-                    ${selected ? "bg-[#00AA00] border-transparent" : "bg-white border-[#96A8B6]"}
-                  `}
-                >
-                  {selected && (
-                    <span className="text-white text-sm font-bold leading-none">✓</span>
-                  )}
-                </div>
-
-
-                {/* Course code + name */}
-                <div className="flex flex-row items-center gap-3 flex-1">
-                  
-
-                  <span
+                  {/* Course code + name */}
+                  <div className="flex items-center gap-1 flex-1 flex-wrap">
+                    <span
                       className="
                         inline-flex items-center justify-center
                         rounded-[6px]
@@ -137,23 +137,23 @@ export function Step1Courses({
                         tracking-[-0.5px]
                         h-[32px]
                         px-[6px] py-[4px]
-                      ">
-
+                      "
+                    >
                       {code || course.id}
-                  </span>
+                    </span>
 
-
-
-                  <span className="
-                    text-[18px]
-                    font-[500]
-                    uppercase
-                    text-[#5A5C5E]
-                    leading-[16px]
-                  "
-                  >
-                    {name}
-                  </span>
+                    <span
+                      className="
+                        text-[18px]
+                        font-[500]
+                        uppercase
+                        text-[#5A5C5E]
+                        leading-[16px]
+                      "
+                    >
+                      {name}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Subscription pill */}
@@ -164,12 +164,14 @@ export function Step1Courses({
                     onToggleSubscription(course.id);
                   }}
                   className={`
-                    ml-4
+                    ml-auto
+                    mt-2
                     px-3 py-1
                     rounded-full
                     text-xs
                     font-semibold
                     border
+                    text-center
                     ${
                       effectiveSubscribed
                         ? "bg-[#E6F4EA] text-[#1E7A1E] border-[#B5E0C2]"
@@ -179,21 +181,11 @@ export function Step1Courses({
                 >
                   {effectiveSubscribed ? "Suscrito" : "No suscrito"}
                 </button>
-
-
-
-
-
               </li>
             );
           })}
         </ul>
       </div>
-
-
-
-
-
     </div>
   );
 }
