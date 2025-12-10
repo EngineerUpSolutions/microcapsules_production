@@ -7,20 +7,19 @@ services:
     volumes:
       - ./back-end/logs:/app/logs
     environment:
-      TOPICS_API_URL: "http://10.217.78.132:8000/api/v1/temas/generar"
-      MICROCAPS_API_URL: "http://10.217.78.132:8000/api/v1/microcapsulas/generar"
-      DB_HOST: "host.docker.internal"
-      DB_PORT: "5432"
-      DB_NAME: "zajuna"
-      DB_USER: "postgres"
-      DB_PASSWORD: "Integra4for@@$"
-      DB_PREFIX: "mdl_"
+      TOPICS_API_URL: "${TOPICS_API_URL}"
+      MICROCAPS_API_URL: "${MICROCAPS_API_URL}"
+      DB_HOST: "${DB_HOST}"
+      DB_PORT: "${DB_PORT}"
+      DB_NAME: "${DB_NAME}"
+      DB_USER: "${DB_USER}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_PREFIX: "${DB_PREFIX}"
     ports:
       - "127.0.0.1:8080:8080"
     extra_hosts:
       - "host.docker.internal:host-gateway"  
     restart: unless-stopped
-
   frontend:
     build:
       context: ./front-end
@@ -29,9 +28,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      MICROCAPS_SECRET: "k8Z3pL9qT2vX6sR1yB4nW7cH5mD0fG8Q"
-      BACKEND_URL: "http://backend:8080"
-      NODE_ENV: "production"
+      MICROCAPS_SECRET: "${MICROCAPS_SECRET}"
+      BACKEND_URL: "${BACKEND_URL}"
+      NODE_ENV: "${NODE_ENV}"
     depends_on:
       - backend
     restart: unless-stopped
