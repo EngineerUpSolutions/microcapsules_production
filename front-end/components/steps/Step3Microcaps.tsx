@@ -24,12 +24,14 @@ export function Step3Microcaps({
     );
   }
 
-  // Extract course code + clean name
-  const match = selectedCourse.fullname.match(/\((\\d+)\)\\s*$/);
-  const code = match ? match[1] : selectedCourse.id;
-  const name = match
-    ? selectedCourse.fullname.replace(/\\s*\\(\\d+\\)\\s*$/, "").trim()
-    : selectedCourse.fullname;
+
+// Extract course code + clean name
+const match = selectedCourse.fullname.match(/\((\d+)\)\s*$/);
+const code = match ? match[1] : selectedCourse.id;
+const name = match
+  ? selectedCourse.fullname.replace(/\s*\(\d+\)\s*$/, "").trim()
+  : selectedCourse.fullname;
+
 
   // Hover + Copied states
   const [hoverIndex, setHoverIndex] = React.useState<number | null>(null);
@@ -54,16 +56,6 @@ export function Step3Microcaps({
   return (
     <div className="flex flex-col gap-4">
       {/* MAIN WRAPPER WITH SCROLL */}
-      {/* <div
-        className="
-          bg-[#F1F1F1]
-          rounded-xl
-          px-4
-          py-4
-          overflow-y-auto
-          max-h-[420px]
-        "
-      > */}
       <div
         className="
           bg-[#F1F1F1]

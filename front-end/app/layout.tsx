@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+import "../styles/globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -24,11 +24,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full overflow-hidden`}
       >
-        <div className="min-h-screen bg-gradient-to-br from-[#020443] to-[#012c84]">
+        <div className="h-full bg-gradient-to-br from-[#020443] to-[#012c84]">
           {children}
         </div>
       </body>

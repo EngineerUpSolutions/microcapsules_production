@@ -13,7 +13,7 @@ type FlowShellProps = {
   onBack?: () => void;
   onContinue?: () => void;
   onFinish?: () => void;
-  canContinue?: boolean; // 🔥 NEW: Step1 y Step2 pueden activar/desactivar el botón
+  canContinue?: boolean;
 };
 
 export function FlowShell({
@@ -24,14 +24,16 @@ export function FlowShell({
   onBack,
   onContinue,
   onFinish,
-  canContinue = true, // default
+  canContinue = true,
 }: FlowShellProps) {
   return (
     <div
       className="
-        min-h-screen flex flex-col items-center
+        h-full
+        flex flex-col items-center
         px-4 pt-24 sm:pt-[49px]
         relative
+        overflow-hidden
       "
     >
       {/* Floating close-tab button */}
@@ -73,7 +75,6 @@ export function FlowShell({
           px-4 sm:px-8 pt-8
         "
       >
-
         {/* TITLE + DESCRIPTION */}
         <div className="w-full px-[16px] flex flex-col gap-[16px] mt-6">
           <h1 className="font-[600] text-[28px] leading-[100%] text-[#002C4D]">
@@ -115,10 +116,9 @@ export function FlowShell({
         </div>
 
         {/* CONTENT AREA SCROLLABLE */}
-        <div className="flex-1 overflow-y-auto px-4 pb-4">
+        <div className="flex-1 overflow-y-auto px-4 pb-24">
           {children}
         </div>
-        {/* <div className="flex-1 overflow-y-auto px-8 pb-24">{children}</div> */}
 
         {/* ----- FIXED BOTTOM BUTTON BAR ----- */}
         <div
@@ -155,7 +155,9 @@ export function FlowShell({
           )}
 
           {/* FINALIZAR ON STEP 3 */}
-          {currentStep === 3 && onFinish && <FinalizarButton onClick={onFinish} />}
+          {currentStep === 3 && onFinish && (
+            <FinalizarButton onClick={onFinish} />
+          )}
         </div>
       </div>
 

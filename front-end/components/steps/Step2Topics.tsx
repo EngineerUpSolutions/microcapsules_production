@@ -66,7 +66,23 @@ export function Step2Topics({
       </div>
 
       {/* Grey container (same as Step1) */}
-      <div className="bg-[#F1F1F1] rounded-xl px-4 pt-6 pb-6 max-h-[420px] overflow-y-auto flex flex-col gap-4">
+      <div
+        className="
+          bg-[#F1F1F1]
+          rounded-xl
+          px-4 pt-6 pb-6
+          overflow-y-auto
+          flex flex-col gap-4
+
+          /* Responsive dynamic height similar to Step 3 */
+          max-h-[calc(100vh-350px)]
+          sm:max-h-[calc(100vh-330px)]
+          md:max-h-[calc(100vh-300px)]
+          lg:max-h-[calc(100vh-280px)]
+        "
+      >
+
+
 
         {/* Blue course banner (Figma values) */}
         {/* Blue course banner — EXACT FIGMA DESIGN */}
