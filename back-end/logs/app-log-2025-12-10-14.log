@@ -1,0 +1,4 @@
+2025/12/10 14:14:57 Topics API call error: Post "http://10.217.78.132:8000/api/v1/temas/generar": dial tcp 10.217.78.132:8000: connect: no route to host
+2025/12/10 14:14:57 Topics API call error: Post "http://10.217.78.132:8000/api/v1/temas/generar": dial tcp 10.217.78.132:8000: connect: no route to host
+2025/12/10 14:15:00 Topics API call error: Post "http://10.217.78.132:8000/api/v1/temas/generar": dial tcp 10.217.78.132:8000: connect: no route to host
+2025/12/10 14:16:39 Topics API call error: Post "http://10.217.78.132:8000/api/v1/temas/generar": dial tcp 10.217.78.132:8000: connect: no route to host
