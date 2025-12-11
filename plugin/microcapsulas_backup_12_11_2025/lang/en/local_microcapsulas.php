@@ -34,6 +34,3 @@
  $string['dbuser'] = 'Usuario:';
  $string['dbpassword'] = 'Contraseña:';
  $string['dbschema'] = 'Esquema:';
- $string['secret'] = 'Clave HMAC para Microcápsulas';
- $string['secret_desc'] = 'Clave utilizada para firmar el token de acceso hacia el módulo Microcápsulas.';
-

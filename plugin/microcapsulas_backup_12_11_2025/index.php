@@ -36,15 +36,9 @@ foreach ($courses as $c) {
 // Create raw string
 $raw = $userid . '|' . $fullname . '|' . json_encode($filteredcourses);
 
-
-// SIGNATURE: secret read from plugin configuration.
-$secret = get_config('local_microcapsulas', 'secret');
-if (empty($secret)) {
-    // Si no hay clave configurada, mejor avisar claramente.
-    die('Microcápsulas: clave HMAC no configurada. Contacte al administrador del sistema.');
-}
+// SIGNATURE
+$secret = 'k8Z3pL9qT2vX6sR1yB4nW7cH5mD0fG8Q';
 $sig = hash_hmac('sha256', $raw, $secret);
-
 
 $encodedcourses = urlencode(json_encode($filteredcourses));
 
