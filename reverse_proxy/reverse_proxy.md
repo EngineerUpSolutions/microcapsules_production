@@ -10,4 +10,4 @@
 	# Next.js reverse proxy (CORRECT + FIXED VERSION)
 	
 
-	#sudo systemctl reload apache2
+	
