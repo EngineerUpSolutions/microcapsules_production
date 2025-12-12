@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import CryptoJS from "crypto-js";
 import { useEffect, useState } from "react";
 
 import { FlowShell } from "../components/layout/FlowShell";
@@ -55,14 +54,30 @@ export default function PageClient() {
   }
 
   // Signature validation
-  const SECRET =
-    process.env.MICROCAPS_SECRET ||
-    "k8Z3pL9qT2vX6sR1yB4nW7cH5mD0fG8Q";
+  useEffect(() => {
+  async function validate() {
+    const res = await fetch("/api/validate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        uid,
+        name,
+        courses: decodedCoursesStr,
+        sig,
+      }),
+    });
 
-  const raw = `${uid}|${name}|${decodedCoursesStr}`;
-  const expectedSig = CryptoJS.HmacSHA256(raw, SECRET).toString();
+    if (!res.ok) {
+      throw new Error("Invalid access");
+    }
+  }
 
-  if (expectedSig !== sig) return <div>INVALID ACCESS</div>;
+  validate().catch(() => {
+    window.location.href = "/unauthorized";
+  });
+}, [uid, name, decodedCoursesStr, sig]);
+
+
 
   const initialUserData: UserData = { uid: uidStr, name, courses };
 
