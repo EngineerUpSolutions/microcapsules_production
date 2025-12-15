@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . '/../../config.php');
 require_login();
-
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url(new moodle_url('/local/microcapsulas/index.php'));
 $userid = $USER->id;
 $fullname = fullname($USER);
 
@@ -48,7 +49,7 @@ $sig = hash_hmac('sha256', $raw, $secret);
 
 $encodedcourses = urlencode(json_encode($filteredcourses));
 
-$externalurl = "http://127.0.0.1/microcapsulas"
+$externalurl = "https://zajunavideo.com/microcapsulas"
     . "?uid={$userid}"
     . "&name=" . urlencode($fullname)
     . "&courses={$encodedcourses}"
