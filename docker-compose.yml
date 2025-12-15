@@ -31,6 +31,8 @@ services:
       MICROCAPS_SECRET: "${MICROCAPS_SECRET}"
       BACKEND_URL: "${BACKEND_URL}"
       NODE_ENV: "${NODE_ENV}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - backend
     restart: unless-stopped
