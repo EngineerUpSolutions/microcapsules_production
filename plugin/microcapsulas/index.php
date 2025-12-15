@@ -56,10 +56,34 @@ $externalurl = "https://zajunavideo.com/microcapsulas"
     . "&sig={$sig}";
 
 echo $OUTPUT->header();
-echo "
-<script>
-    window.open('$externalurl', '_blank');
-    window.location.href = '$CFG->wwwroot';
-</script>
-";
+// echo "
+// <script>
+//     window.open('$externalurl', '_blank');
+//     window.location.href = '$CFG->wwwroot';
+// </script>
+// ";
+//new
+echo html_writer::start_div('microcapsulas-launch', [
+    'style' => 'text-align:center; margin-top:40px;'
+]);
+
+echo html_writer::tag('h3', 'Microcápsulas');
+
+echo html_writer::tag(
+    'p',
+    'Haz clic en el botón para abrir Microcápsulas en una nueva pestaña.'
+);
+
+echo html_writer::link(
+    $externalurl,
+    'Abrir Microcápsulas',
+    [
+        'target' => '_blank',
+        'rel' => 'noopener noreferrer',
+        'class' => 'btn btn-primary btn-lg'
+    ]
+);
+
+echo html_writer::end_div();
+//end
 echo $OUTPUT->footer();
