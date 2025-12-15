@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 	"strconv"
-
+        "os"
 	"microcapsules-backend/internal/subscriptions"
 
 	"github.com/gin-gonic/gin"
@@ -70,6 +70,16 @@ func (h *SubscriptionHandler) GetUserSubscriptions(c *gin.Context) {
 // POST /api/v1/distribution/subscriptions
 // Body: { "userId": "175878", "courseId": "10144", "subscribe": true }
 func (h *SubscriptionHandler) UpdateSubscription(c *gin.Context) {
+	//start
+	expected := os.Getenv("INTERNAL_API_TOKEN")
+	got := c.GetHeader("X-Internal-Token")
+
+	if expected == "" || got != expected {
+            c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+            return
+	}
+
+	//end
 	var req updateSubscriptionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "JSON inválido"})

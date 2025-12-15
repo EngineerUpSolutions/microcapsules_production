@@ -22,6 +22,9 @@ export async function GET(req: NextRequest) {
 
   const resp = await fetch(backendUrl, {
     method: "GET",
+    headers: {
+    "X-Internal-Token": process.env.INTERNAL_API_TOKEN || "",
+    },
   });
 
   const body = await resp.text();
@@ -40,7 +43,10 @@ export async function POST(req: NextRequest) {
 
   const resp = await fetch(backendUrl, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+       "Content-Type": "application/json",
+       "X-Internal-Token": process.env.INTERNAL_API_TOKEN || "",
+    },
     body: JSON.stringify(payload),
   });
 
