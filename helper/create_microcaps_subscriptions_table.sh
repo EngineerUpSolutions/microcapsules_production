@@ -7,7 +7,7 @@ set -euo pipefail
 
 DB_HOST="${DB_HOST:-127.0.0.1}"
 DB_PORT="${DB_PORT:-5432}"
-DB_NAME="${DB_NAME:-zajuna}"     # your DB name
+DB_NAME="${DB_NAME:-moodle}"     # your DB name
 DB_USER="${DB_USER:-postgres}"   # your DB user
 DB_PREFIX="${DB_PREFIX:-mdl_}"   # Moodle table prefix (usually mdl_)
 
