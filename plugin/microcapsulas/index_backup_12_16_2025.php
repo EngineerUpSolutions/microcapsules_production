@@ -49,37 +49,41 @@ $sig = hash_hmac('sha256', $raw, $secret);
 
 $encodedcourses = urlencode(json_encode($filteredcourses));
 
-$externalurl = "http://127.0.0.1/microcapsulas"
+$externalurl = "https://zajunavideo.com/microcapsulas"
     . "?uid={$userid}"
     . "&name=" . urlencode($fullname)
     . "&courses={$encodedcourses}"
     . "&sig={$sig}";
 
 echo $OUTPUT->header();
+// echo "
+// <script>
+//     window.open('$externalurl', '_blank');
+//     window.location.href = '$CFG->wwwroot';
+// </script>
+// ";
+//new
+echo html_writer::start_div('microcapsulas-launch', [
+    'style' => 'text-align:center; margin-top:40px;'
+]);
 
 echo html_writer::tag('h3', 'Microcápsulas');
-echo html_writer::tag('p', 'Redirigiendo a Microcápsulas...');
 
-// Fallback button (if popup is blocked)
+echo html_writer::tag(
+    'p',
+    'Haz clic en el botón para abrir Microcápsulas en una nueva pestaña.'
+);
+
 echo html_writer::link(
     $externalurl,
-    'Abrir Microcápsulas manualmente',
+    'Abrir Microcápsulas',
     [
         'target' => '_blank',
         'rel' => 'noopener noreferrer',
-        'class' => 'btn btn-primary'
+        'class' => 'btn btn-primary btn-lg'
     ]
 );
 
-// JavaScript auto-open
-echo html_writer::script("
-    window.onload = function() {
-        var win = window.open('$externalurl', '_blank');
-        if (win) {
-            window.location.href = '{$CFG->wwwroot}/my'; // Go back to Moodle homepage
-        }
-    };
-");
-
+echo html_writer::end_div();
+//end
 echo $OUTPUT->footer();
-
