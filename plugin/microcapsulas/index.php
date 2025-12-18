@@ -24,7 +24,7 @@ foreach ($courses as $c) {
     $roles = get_user_roles($context, $USER->id);
 
     foreach ($roles as $r) {
-        if (in_array((int)$r->roleid, [1, 2, 5], true)) {
+        if (in_array((int)$r->roleid, [2, 5], true)) {
             $filteredcourses[] = [
                 'id' => $c->id,
                 'fullname' => $c->fullname
