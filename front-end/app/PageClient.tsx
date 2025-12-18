@@ -171,9 +171,9 @@ export default function PageClient() {
     try {
       const data = await generateMicrocapsules(
         selectedTopic.trim(),
-        500,
-        600,
-        5
+        900,
+        1000,
+        7
       );
 
       setMicrocapsules(data.microcapsulas || []);

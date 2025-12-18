@@ -56,43 +56,10 @@ $externalurl = "https://zajunavideo.com/microcapsulas"
     . "&sig={$sig}";
 
 echo $OUTPUT->header();
-// echo "
-// <script>
-//     window.open('$externalurl', '_blank');
-//     window.location.href = '$CFG->wwwroot';
-// </script>
-// ";
-//start
-echo html_writer::start_div('microcapsulas-launch', [
-    'style' => 'text-align:center; margin-top:40px;'
-]);
-
-echo html_writer::tag('h3', 'Microcápsulas');
-
-//echo html_writer::tag(
-//    'p',
-//    'Haz clic en el botón para abrir Microcápsulas en una nueva pestaña.'
-//);
-echo html_writer::tag(
-    'p',
-    'En este módulo encontrarás microcápsulas con temas y contenidos de los cursos en los que estás inscrito y activo dentro de la categoría Formación Titulada Virtual y a Distancia. 
-     Revísalas día a día para reforzar y fortalecer tu aprendizaje de forma continua.
-     <br><br>
-     <strong>Haz clic en el botón para abrir Microcápsulas en una nueva pestaña.</strong>'
-);
-
-
-echo html_writer::link(
-    $externalurl,
-    'Abrir Microcápsulas',
-    [
-        'target' => '_blank',
-        'rel' => 'noopener noreferrer',
-        'class' => 'btn btn-primary btn-lg'
-    ]
-);
-
-echo html_writer::end_div();
-
-//end
+echo "
+<script>
+    window.open('$externalurl', '_blank');
+    window.location.href = '$CFG->wwwroot';
+</script>
+";
 echo $OUTPUT->footer();
