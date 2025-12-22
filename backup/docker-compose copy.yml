@@ -16,35 +16,25 @@ services:
       DB_PASSWORD: "${DB_PASSWORD}"
       DB_PREFIX: "${DB_PREFIX}"
       INTERNAL_API_TOKEN: "${INTERNAL_API_TOKEN}"
+    ports:
+      - "127.0.0.1:18080:8080"
     extra_hosts:
-      - "host.docker.internal:host-gateway"
-    networks:
-      microcapsulas_net:
-        ipv4_address: 172.27.240.10
+      - "host.docker.internal:host-gateway"  
     restart: unless-stopped
-
   frontend:
     build:
       context: ./front-end
       dockerfile: Dockerfile
     image: microcapsulas_frontend:latest
+    ports:
+      - "127.0.0.1:13000:3000" 
     environment:
       MICROCAPS_SECRET: "${MICROCAPS_SECRET}"
-      BACKEND_URL: "${BACKEND_URL}"    
+      BACKEND_URL: "${BACKEND_URL}"
       NODE_ENV: "${NODE_ENV}"
       INTERNAL_API_TOKEN: "${INTERNAL_API_TOKEN}"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
       - backend
-    networks:
-      microcapsulas_net:
-        ipv4_address: 172.27.240.11
     restart: unless-stopped
-
-networks:
-  microcapsulas_net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.27.240.0/24
