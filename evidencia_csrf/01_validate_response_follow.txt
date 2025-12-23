@@ -1,0 +1,15 @@
+HTTP/1.1 308 Permanent Redirect
+Date: Tue, 23 Dec 2025 17:02:45 GMT
+Server: Apache/2.4.52 (Ubuntu)
+location: /api/validate
+Refresh: 0;url=/api/validate
+Transfer-Encoding: chunked
+
+HTTP/1.1 200 OK
+Date: Tue, 23 Dec 2025 17:02:45 GMT
+Server: Apache/2.4.52 (Ubuntu)
+vary: rsc,next-router-state-tree,next-router-prefetch,next-router-segment-prefetch
+content-type: application/json
+Transfer-Encoding: chunked
+
+{"ok":true}

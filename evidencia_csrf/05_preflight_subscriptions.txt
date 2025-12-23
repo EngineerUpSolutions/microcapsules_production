@@ -1,0 +1,8 @@
+HTTP/1.1 308 Permanent Redirect
+Date: Tue, 23 Dec 2025 17:04:11 GMT
+Server: Apache/2.4.52 (Ubuntu)
+location: /api/subscriptions
+Refresh: 0;url=/api/subscriptions
+Transfer-Encoding: chunked
+
+/api/subscriptions

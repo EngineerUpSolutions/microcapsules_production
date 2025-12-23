@@ -1,0 +1,16 @@
+HTTP/1.1 308 Permanent Redirect
+Date: Tue, 23 Dec 2025 17:04:15 GMT
+Server: Apache/2.4.52 (Ubuntu)
+location: /api/topics
+Refresh: 0;url=/api/topics
+Transfer-Encoding: chunked
+
+HTTP/1.1 500 Internal Server Error
+Date: Tue, 23 Dec 2025 17:04:15 GMT
+Server: Apache/2.4.52 (Ubuntu)
+vary: rsc,next-router-state-tree,next-router-prefetch,next-router-segment-prefetch
+content-type: application/json
+Connection: close
+Transfer-Encoding: chunked
+
+{"error":"Error interno al generar temas"}

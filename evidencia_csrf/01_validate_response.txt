@@ -1,0 +1,8 @@
+HTTP/1.1 308 Permanent Redirect
+Date: Tue, 23 Dec 2025 17:00:38 GMT
+Server: Apache/2.4.52 (Ubuntu)
+location: /api/validate
+Refresh: 0;url=/api/validate
+Transfer-Encoding: chunked
+
+/api/validate

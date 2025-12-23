@@ -1,0 +1,13 @@
+HTTP/1.1 308 Permanent Redirect
+Date: Tue, 23 Dec 2025 17:05:18 GMT
+Server: Apache/2.4.52 (Ubuntu)
+location: /api/microcapsules
+Refresh: 0;url=/api/microcapsules
+Transfer-Encoding: chunked
+
+HTTP/1.1 204 No Content
+Date: Tue, 23 Dec 2025 17:05:18 GMT
+Server: Apache/2.4.52 (Ubuntu)
+vary: rsc,next-router-state-tree,next-router-prefetch,next-router-segment-prefetch
+allow: OPTIONS, POST
+
