@@ -35,6 +35,12 @@ function getCourseNameWithoutCode(fullname: string): string {
 
 export default function PageClient() {
   const searchParams = useSearchParams();
+  const hasQueryAuth =
+    !!searchParams?.get("uid") &&
+    !!searchParams?.get("name") &&
+    !!searchParams?.get("courses") &&
+    !!searchParams?.get("sig");
+
 
   // Auth cache por pestaña (para poder limpiar la URL sin perder auth)
   const [auth, setAuth] = useState<AuthParams | null>(null);
@@ -260,7 +266,14 @@ export default function PageClient() {
 
   // --------------------------- RENDER -----------------------------
   // Render seguro (sin romper hooks) y BLOQUEADO hasta validar
-  if (!auth) return <div>Cargando...</div>;
+  if (!auth) {
+  // Si viene con parámetros desde Moodle, puede estar en el primer render antes de que el useEffect guarde en sessionStorage
+  if (hasQueryAuth) return <div>Cargando...</div>;
+
+  // Si no hay parámetros y no hay sessionStorage => URL copiada / acceso directo
+  return <div>Acceso inválido. Ingrese desde Zajuna.</div>;
+}
+
   if (!coursesOk) return <div>Invalid courses data</div>;
   if (!validated) return <div>Cargando...</div>;
 
