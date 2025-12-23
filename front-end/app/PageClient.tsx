@@ -20,6 +20,13 @@ type UserData = {
   courses: Course[];
 };
 
+type AuthParams = {
+  uid: string;
+  name: string;
+  courses: string; // viene URL-encoded
+  sig: string;
+};
+
 // Removes (1234) from fullname
 function getCourseNameWithoutCode(fullname: string): string {
   const match = fullname.match(/\((\d+)\)\s*$/);
@@ -29,60 +36,11 @@ function getCourseNameWithoutCode(fullname: string): string {
 export default function PageClient() {
   const searchParams = useSearchParams();
 
-  if (!searchParams) return <div>Missing parameters</div>;
+  // Auth cache por pestaña (para poder limpiar la URL sin perder auth)
+  const [auth, setAuth] = useState<AuthParams | null>(null);
+  const [validated, setValidated] = useState(false);
 
-  const uid = searchParams.get("uid");
-  const name = searchParams.get("name");
-  const rawCourses = searchParams.get("courses");
-  const sig = searchParams.get("sig");
-
-  if (!uid || !name || !rawCourses || !sig) {
-    return <div>Missing parameters</div>;
-  }
-
-  // From here on, we know uid is not null, so we create a safe string
-  const uidStr = uid as string;
-
-  // Raw JSON as sent by Moodle
-  const decodedCoursesStr = decodeURIComponent(rawCourses);
-
-  let courses: any[] = [];
-  try {
-    courses = JSON.parse(decodedCoursesStr);
-  } catch {
-    return <div>Invalid courses data</div>;
-  }
-
-  // Signature validation
-  useEffect(() => {
-  async function validate() {
-    const res = await fetch("/api/validate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        uid,
-        name,
-        courses: decodedCoursesStr,
-        sig,
-      }),
-    });
-
-    if (!res.ok) {
-      throw new Error("Invalid access");
-    }
-  }
-
-  validate().catch(() => {
-    window.location.href = "/unauthorized";
-  });
-}, [uid, name, decodedCoursesStr, sig]);
-
-
-
-  const initialUserData: UserData = { uid: uidStr, name, courses };
-
-  // Flow state
-  const [userData] = useState(initialUserData);
+  // --------------------------- FLOW STATE (hooks siempre en el mismo orden) -----------------------------
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
@@ -96,14 +54,108 @@ export default function PageClient() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [subscriptions, setSubscriptions] = useState<Record<string, boolean>>({});
 
-  // Save session
+  // 1) Bootstrap auth: sessionStorage -> si no hay, leer query -> guardar -> limpiar URL
   useEffect(() => {
-    localStorage.setItem("micro_user", JSON.stringify(userData));
-  }, [userData]);
+    if (auth) return;
+    if (typeof window === "undefined") return;
 
-  // Load explicit subscriptions for this user (backend).
-  // IMPORTANT: if no record exists for a course, UI will treat it as "subscribed".
+    // a) restaurar de sessionStorage (si el usuario refresca /microcapsulas)
+    const stored = sessionStorage.getItem("micro_auth");
+    if (stored) {
+      try {
+        setAuth(JSON.parse(stored) as AuthParams);
+        setValidated(false);
+        return;
+      } catch {
+        sessionStorage.removeItem("micro_auth");
+      }
+    }
+
+    // b) capturar de query la primera vez que viene desde Moodle
+    const uid = searchParams?.get("uid");
+    const name = searchParams?.get("name");
+    const courses = searchParams?.get("courses");
+    const sig = searchParams?.get("sig");
+
+    if (uid && name && courses && sig) {
+      const a: AuthParams = { uid, name, courses, sig };
+      sessionStorage.setItem("micro_auth", JSON.stringify(a));
+      setAuth(a);
+      setValidated(false);
+
+      // Limpia la URL visible: queda /microcapsulas sin query
+      if (window.location.search) {
+        // Más seguro que hardcodear "/microcapsulas" si algún día cambia basePath/ruta
+        window.history.replaceState({}, "", window.location.pathname);
+      }
+    }
+  }, [auth, searchParams]);
+
+  // Derivados seguros
+  const uidStr = auth?.uid ?? "";
+  const userName = auth?.name ?? "";
+  const sig = auth?.sig ?? "";
+
+  const decodedCoursesStr = auth ? decodeURIComponent(auth.courses) : "";
+  let courses: Course[] = [];
+  let coursesOk = false;
+
+  if (auth) {
+    try {
+      courses = JSON.parse(decodedCoursesStr);
+      coursesOk = Array.isArray(courses);
+    } catch {
+      coursesOk = false;
+    }
+  }
+
+  const userData: UserData = { uid: uidStr, name: userName, courses };
+
+  // 2) Validar firma SOLO cuando ya tengo auth completo
   useEffect(() => {
+    if (!auth) return;
+    if (!coursesOk) return;
+    if (validated) return;
+
+    async function validate() {
+      const res = await fetch("/api/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          uid: uidStr,
+          name: userName,
+          courses: decodedCoursesStr, // string raw JSON
+          sig,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Invalid access");
+      setValidated(true);
+    }
+
+    validate().catch(() => {
+      // limpieza opcional por seguridad si la firma falla
+      try {
+        sessionStorage.removeItem("micro_auth");
+      } catch {}
+      window.location.href = "/unauthorized";
+    });
+  }, [auth, coursesOk, uidStr, userName, decodedCoursesStr, sig, validated]);
+
+  // 3) Guardar sesión SOLO cuando ya está validado
+  useEffect(() => {
+    if (!auth) return;
+    if (!coursesOk) return;
+    if (!validated) return;
+
+    localStorage.setItem("micro_user", JSON.stringify(userData));
+  }, [auth, coursesOk, validated, uidStr, userName, decodedCoursesStr]);
+
+  // 4) Subscriptions: SOLO cuando ya está validado
+  useEffect(() => {
+    if (!uidStr) return;
+    if (!validated) return;
+
     let cancelled = false;
 
     async function load() {
@@ -117,44 +169,39 @@ export default function PageClient() {
         }
         setSubscriptions(map);
       } catch {
-        // If it fails, we just keep an empty map.
-        // The UI will assume "subscribed" by default (no DB record).
+        // ignore; default subscribed
       }
     }
 
     load();
-
     return () => {
       cancelled = true;
     };
-  }, [uidStr]);
+  }, [uidStr, validated]);
 
   // --------------------------- STEP LOGIC -----------------------------
 
   const handleContinueFromStep1 = async () => {
     if (!selectedCourseId) return;
-    // Extra safety: don’t allow continuing if the course is not subscribed
-    const isSubscribedForSelected =
-      subscriptions[selectedCourseId] ?? true;
+
+    const isSubscribedForSelected = subscriptions[selectedCourseId] ?? true;
     if (!isSubscribedForSelected) {
       setErrorMessage("Debes estar suscrito al curso para continuar.");
       return;
     }
+
     setIsContinuing(true);
     try {
       const course = userData.courses.find((c) => c.id === selectedCourseId);
-
       if (!course) return;
 
       const cleanName = getCourseNameWithoutCode(course.fullname);
-
       const topicsResponse = await generateTopics(cleanName, 5);
 
       setSelectedCourse(course);
       setTopics(topicsResponse.temas);
       setSelectedTopic(null);
       setMicrocapsules([]);
-
       setStep(2);
     } catch {
       setErrorMessage("Error generando temas. Inténtalo de nuevo.");
@@ -167,15 +214,8 @@ export default function PageClient() {
     if (!selectedTopic) return;
 
     setIsContinuing(true);
-
     try {
-      const data = await generateMicrocapsules(
-        selectedTopic.trim(),
-        900,
-        1000,
-        7
-      );
-
+      const data = await generateMicrocapsules(selectedTopic.trim(), 900, 1000, 7);
       setMicrocapsules(data.microcapsulas || []);
       setStep(3);
     } catch {
@@ -191,24 +231,15 @@ export default function PageClient() {
 
   const handleToggleSubscription = async (courseId: string) => {
     const current = subscriptions[courseId];
-    // If no record exists, default is "subscribed"
     const effectiveSubscribed = current ?? true;
     const next = !effectiveSubscribed;
 
-    // Optimistic update in UI
-    setSubscriptions((prev) => ({
-      ...prev,
-      [courseId]: next,
-    }));
+    setSubscriptions((prev) => ({ ...prev, [courseId]: next }));
 
     try {
       await updateSubscription(uidStr, courseId, next);
     } catch {
-      // Rollback on error
-      setSubscriptions((prev) => ({
-        ...prev,
-        [courseId]: effectiveSubscribed,
-      }));
+      setSubscriptions((prev) => ({ ...prev, [courseId]: effectiveSubscribed }));
       setErrorMessage("No se pudo actualizar la suscripción. Inténtalo de nuevo.");
     }
   };
@@ -217,13 +248,8 @@ export default function PageClient() {
     window.close();
   };
 
-  // ------------------ NEW: CAN CONTINUE LOGIC ----------------------
-
-  // Is the selected course subscribed? (default true if not in the map)
   const selectedCourseIsSubscribed =
-    selectedCourseId == null
-      ? false
-      : (subscriptions[selectedCourseId] ?? true);
+    selectedCourseId == null ? false : (subscriptions[selectedCourseId] ?? true);
 
   const canContinue =
     step === 1
@@ -232,8 +258,11 @@ export default function PageClient() {
       ? selectedTopic !== null
       : true;
 
-
   // --------------------------- RENDER -----------------------------
+  // Render seguro (sin romper hooks) y BLOQUEADO hasta validar
+  if (!auth) return <div>Cargando...</div>;
+  if (!coursesOk) return <div>Invalid courses data</div>;
+  if (!validated) return <div>Cargando...</div>;
 
   return (
     <FlowShell
@@ -242,16 +271,11 @@ export default function PageClient() {
       showBack={step > 1}
       onBack={handleBack}
       onContinue={
-        step === 1
-          ? handleContinueFromStep1
-          : step === 2
-          ? handleContinueFromStep2
-          : undefined
+        step === 1 ? handleContinueFromStep1 : step === 2 ? handleContinueFromStep2 : undefined
       }
       onFinish={step === 3 ? finishProcess : undefined}
       canContinue={canContinue}
     >
-      {/* MODALS FOR ERRORS */}
       {errorMessage && (
         <div
           style={{
@@ -297,7 +321,6 @@ export default function PageClient() {
         </div>
       )}
 
-      {/* STEP CONTENT */}
       {step === 1 && (
         <Step1Courses
           courses={userData.courses}
